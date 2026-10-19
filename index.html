@@ -128,10 +128,6 @@
       flex-direction: column;
     }
 
-    /* =========================
-       CHAT
-    ========================= */
-
     .settings {
       padding: 12px 14px;
       display: grid;
@@ -244,31 +240,27 @@
       padding: 0 4px;
     }
 
-    /* =========================
-       MEMORY PROPOSAL CARD (IN-CHAT)
-    ========================= */
+    /* KARTU MEMORI IN-CHAT HASIL REVISI */
     .memory-card-inline {
       align-self: flex-start;
       width: 100%;
-      max-width: 340px;
+      max-width: 320px;
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 12px 14px;
-      margin-top: 2px;
+      margin-top: 4px;
       display: flex;
       flex-direction: column;
       gap: 8px;
       transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .memory-card-header {
       font-size: 12px;
       color: var(--accent);
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
 
     .memory-card-body {
@@ -279,7 +271,7 @@
 
     .memory-card-actions {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       margin-top: 2px;
     }
 
@@ -287,14 +279,16 @@
       flex: 1;
       padding: 6px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 14px;
       border: 1px solid var(--border);
       background: var(--panel2);
       color: var(--text);
+      transition: background 0.2s ease;
     }
 
     .memory-card-actions button:hover {
       border-color: var(--accent);
+      background: var(--user);
     }
 
     .composer {
@@ -341,10 +335,6 @@
       margin-top: 8px;
       text-align: center;
     }
-
-    /* =========================
-       MEMORY
-    ========================= */
 
     .memory-toolbar {
       padding: 13px;
@@ -450,10 +440,6 @@
       font-size: 10px;
       border-top: 1px solid var(--border);
     }
-
-    /* =========================
-       MODAL
-    ========================= */
 
     .modal {
       position: fixed;
@@ -575,9 +561,7 @@
     </button>
   </nav>
 
-  <!-- =========================
-     CHAT SCREEN
-  ========================== -->
+  <!-- CHAT SCREEN -->
   <section class="screen active" id="chatScreen">
 
     <div class="settings">
@@ -637,9 +621,7 @@
 
   </section>
 
-  <!-- =========================
-     MEMORY SCREEN
-  ========================== -->
+  <!-- MEMORY SCREEN -->
   <section class="screen" id="memoryScreen">
     <div class="memory-toolbar">
       <div class="search">
@@ -674,10 +656,7 @@
 
 </div>
 
-
-<!-- =========================
-     MEMORY MODAL
-========================== -->
+<!-- MEMORY MODAL -->
 <div class="modal" id="memoryModal">
   <div class="modal-box">
     <div class="modal-title" id="memoryModalTitle">Tambah Ingatan</div>
@@ -713,7 +692,6 @@
     </div>
   </div>
 </div>
-
 
 <script>
 "use strict";
@@ -859,7 +837,7 @@ function renderHistory() {
 
     wrapper.append(bubble, time);
 
-    // Render Kartu Memori Interaktif jika ada usulan dari AI
+    // TAMPILKAN KARTU INGATAN JIKA AI MENEMUKAN FAKTA
     if (item.role === "assistant" && item.memoryProposal && !item.memoryProposal.handled) {
       const card = document.createElement("div");
       card.className = "memory-card-inline";
@@ -867,9 +845,9 @@ function renderHistory() {
         <div class="memory-card-header">🧠 Mungkin layak diingat</div>
         <div class="memory-card-body">${safeText(item.memoryProposal.content)}</div>
         <div class="memory-card-actions">
-          <button class="btn-yes">👍</button>
-          <button class="btn-no">👎</button>
-          <button class="btn-close">×</button>
+          <button class="btn-yes" title="Simpan">👍</button>
+          <button class="btn-no" title="Tolak">👎</button>
+          <button class="btn-close" title="Abaikan">×</button>
         </div>
       `;
 
@@ -884,7 +862,6 @@ function renderHistory() {
         item.memoryProposal.handled = true;
         saveLocalHistory();
 
-        // Kirim ke API simpan memori
         try {
           await fetch(API + "memories", {
             method: "POST",
@@ -997,6 +974,10 @@ async function sendMessage() {
   setStatus("Mengirim pesan...");
 
   try {
+    addMessage("user", message, clientMessageId, clientTime);
+    input.value = "";
+    input.style.height = "auto";
+
     const response = await fetch(API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1026,9 +1007,7 @@ async function sendMessage() {
 
     if (state.conversationId !== conversationId) return;
 
-    addMessage("user", message, clientMessageId, clientTime);
-    
-    // Cek jika backend mengirimkan usulan memori (misal: data.memoryProposal)
+    // AMBIL USULAN MEMORI DARI SERVER APABILA ADA
     const memoryProposal = data.memoryProposal || null;
 
     addMessage(
@@ -1039,8 +1018,6 @@ async function sendMessage() {
       memoryProposal
     );
 
-    input.value = "";
-    input.style.height = "auto";
     setStatus("Server terhubung");
   } catch (error) {
     setStatus("Gagal: " + error.message, true);
@@ -1138,6 +1115,51 @@ $("messageInput").addEventListener("keydown", e => {
 $("memorySearch").addEventListener("input", renderMemories);
 $("memoryCategory").addEventListener("change", renderMemories);
 $("refreshMemories").addEventListener("click", loadMemories);
+
+$("addMemoryButton").addEventListener("click", () => {
+  $("memoryModalTitle").textContent = "Tambah Ingatan";
+  $("memoryContent").value = "";
+  $("memorySubcategory").value = "";
+  $("memorySubjectName").value = "Pengguna";
+  $("memoryConfidence").value = "0.9";
+  $("memoryModal").classList.add("show");
+});
+
+$("cancelMemoryButton").addEventListener("click", () => {
+  $("memoryModal").classList.remove("show");
+});
+
+$("saveMemoryButton").addEventListener("click", async () => {
+  const content = $("memoryContent").value.trim();
+  if (!content) {
+    alert("Isi ingatan tidak boleh kosong.");
+    return;
+  }
+
+  try {
+    const response = await fetch(API + "memories", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: currentUserId(),
+        characterId: currentCharacter(),
+        content: content,
+        category: $("memoryCategoryForm").value,
+        subcategory: $("memorySubcategory").value.trim(),
+        subject_name: $("memorySubjectName").value.trim(),
+        confidence: parseFloat($("memoryConfidence").value) || 0.9
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Gagal menyimpan ingatan.");
+
+    $("memoryModal").classList.remove("show");
+    loadMemories();
+  } catch (error) {
+    alert("Gagal: " + error.message);
+  }
+});
 
 // Inisialisasi awal
 loadLocalHistory();
