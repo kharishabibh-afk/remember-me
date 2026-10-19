@@ -1,1170 +1,1993 @@
-<!DOCTYPE html>
+ini index.html nya <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101018">
-  <title>Remember Me</title>
-
-  <style>
-    :root {
-      --bg: #101018;
-      --panel: #191923;
-      --panel2: #222230;
-      --text: #f1efff;
-      --muted: #a5a2bb;
-      --accent: #b8a2ff;
-      --border: #343246;
-      --user: #403461;
-      --assistant: #242431;
-      --danger: #ff9999;
-      --success: #9fe6bd;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: .5;
-      cursor: not-allowed;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 900px;
-      height: 100dvh;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg);
-    }
-
-    header {
-      padding: 17px 18px;
-      background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand {
-      font-size: 21px;
-      font-weight: 750;
-      letter-spacing: -.5px;
-    }
-
-    .brand span {
-      color: var(--accent);
-    }
-
-    .subtitle {
-      margin-top: 3px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .status {
-      color: var(--muted);
-      font-size: 12px;
-      text-align: right;
-      overflow-wrap: anywhere;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      padding: 12px 14px;
-      background: var(--panel);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tab {
-      flex: 1;
-      min-width: 0;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      border-radius: 10px;
-      padding: 11px 7px;
-      font-size: 13px;
-    }
-
-    .tab.active {
-      color: var(--text);
-      background: var(--panel2);
-      border-color: var(--accent);
-    }
-
-    .screen {
-      display: none;
-      min-height: 0;
-      flex: 1;
-    }
-
-    .screen.active {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .settings {
-      padding: 12px 14px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 9px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
-    }
-
-    .settings input,
-    .settings textarea,
-    .search input,
-    .memory-form input,
-    .memory-form textarea,
-    .memory-form select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      outline: none;
-    }
-
-    .settings textarea {
-      min-height: 65px;
-      resize: vertical;
-    }
-
-    .settings input:focus,
-    .settings textarea:focus,
-    .search input:focus,
-    .memory-form input:focus,
-    .memory-form textarea:focus,
-    .memory-form select:focus {
-      border-color: var(--accent);
-    }
-
-    .settings-label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: -5px;
-    }
-
-    .chat {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      padding: 16px 13px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      scroll-behavior: smooth;
-    }
-
-    .empty {
-      margin: auto;
-      max-width: 310px;
-      text-align: center;
-      color: var(--muted);
-      line-height: 1.7;
-      padding: 25px;
-    }
-
-    .empty .emoji {
-      font-size: 35px;
-      margin-bottom: 10px;
-    }
-
-    .message {
-      display: flex;
-      flex-direction: column;
-      max-width: 86%;
-      gap: 5px;
-    }
-
-    .message.user {
-      align-self: flex-end;
-      align-items: flex-end;
-    }
-
-    .message.assistant {
-      align-self: flex-start;
-      align-items: flex-start;
-    }
-
-    .bubble {
-      padding: 11px 14px;
-      border-radius: 15px;
-      line-height: 1.6;
-      font-size: 14px;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-
-    .user .bubble {
-      background: var(--user);
-      border-bottom-right-radius: 4px;
-    }
-
-    .assistant .bubble {
-      background: var(--assistant);
-      border: 1px solid var(--border);
-      border-bottom-left-radius: 4px;
-    }
-
-    .message-time {
-      font-size: 10px;
-      color: var(--muted);
-      padding: 0 4px;
-    }
-
-    /* KARTU MEMORI IN-CHAT HASIL REVISI */
-    .memory-card-inline {
-      align-self: flex-start;
-      width: 100%;
-      max-width: 320px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      margin-top: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .memory-card-header {
-      font-size: 12px;
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .memory-card-body {
-      font-size: 13px;
-      color: var(--text);
-      line-height: 1.4;
-    }
-
-    .memory-card-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 2px;
-    }
-
-    .memory-card-actions button {
-      flex: 1;
-      padding: 6px;
-      border-radius: 8px;
-      font-size: 14px;
-      border: 1px solid var(--border);
-      background: var(--panel2);
-      color: var(--text);
-      transition: background 0.2s ease;
-    }
-
-    .memory-card-actions button:hover {
-      border-color: var(--accent);
-      background: var(--user);
-    }
-
-    .composer {
-      padding: 12px;
-      padding-bottom: max(12px, env(safe-area-inset-bottom));
-      border-top: 1px solid var(--border);
-      background: var(--panel);
-    }
-
-    .composer-row {
-      display: flex;
-      gap: 9px;
-      align-items: flex-end;
-    }
-
-    .composer textarea {
-      flex: 1;
-      min-width: 0;
-      resize: none;
-      max-height: 130px;
-      min-height: 45px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      color: var(--text);
-      background: var(--bg);
-      outline: none;
-      line-height: 1.4;
-    }
-
-    .send {
-      height: 45px;
-      min-width: 54px;
-      border: 0;
-      border-radius: 12px;
-      color: #171322;
-      font-weight: 750;
-      background: var(--accent);
-    }
-
-    .composer-note {
-      font-size: 10px;
-      color: var(--muted);
-      margin-top: 8px;
-      text-align: center;
-    }
-
-    .memory-toolbar {
-      padding: 13px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .memory-toolbar select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      color: var(--text);
-      background: var(--panel);
-    }
-
-    .memory-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .memory-actions button {
-      flex: 1;
-    }
-
-    .memory-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 13px;
-    }
-
-    .memory-card {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 10px;
-    }
-
-    .memory-card.inactive {
-      opacity: .65;
-    }
-
-    .memory-card p {
-      margin: 10px 0;
-      font-size: 14px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .memory-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .badge {
-      padding: 4px 7px;
-      border-radius: 6px;
-      background: var(--panel2);
-    }
-
-    .memory-empty {
-      padding: 25px 12px;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.7;
-    }
-
-    .small-button {
-      border: 1px solid var(--border);
-      background: var(--panel2);
-      color: var(--text);
-      border-radius: 8px;
-      padding: 9px 10px;
-      font-size: 12px;
-    }
-
-    .small-button.danger {
-      color: var(--danger);
-    }
-
-    .small-button.success {
-      color: var(--success);
-    }
-
-    .error {
-      color: var(--danger);
-    }
-
-    .success {
-      color: var(--success);
-    }
-
-    .footer {
-      text-align: center;
-      padding: 9px;
-      color: var(--muted);
-      font-size: 10px;
-      border-top: 1px solid var(--border);
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, .68);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
-      z-index: 1000;
-    }
-
-    .modal.show {
-      display: flex;
-    }
-
-    .modal-box {
-      width: 100%;
-      max-width: 560px;
-      max-height: 90dvh;
-      overflow-y: auto;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 18px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.4);
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 15px;
-    }
-
-    .memory-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .memory-form textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    .form-label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 2px;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .modal-actions button {
-      flex: 1;
-    }
-
-    @media (min-width: 650px) {
-      .settings {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .settings .personality-label,
-      .settings textarea {
-        grid-column: 1 / -1;
-      }
-
-      .message {
-        max-width: 75%;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .tabs {
-        gap: 5px;
-        padding: 9px;
-      }
-
-      .tab {
-        padding: 10px 4px;
-        font-size: 12px;
-      }
-
-      header {
-        padding: 14px 12px;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101018">
+  <title>Remember Me</title>
+
+  <style>
+    :root {
+      --bg: #101018;
+      --panel: #191923;
+      --panel2: #222230;
+      --text: #f1efff;
+      --muted: #a5a2bb;
+      --accent: #b8a2ff;
+      --border: #343246;
+      --user: #403461;
+      --assistant: #242431;
+      --danger: #ff9999;
+      --success: #9fe6bd;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 900px;
+      height: 100dvh;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+
+    header {
+      padding: 17px 18px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: 750;
+      letter-spacing: -.5px;
+    }
+
+    .brand span {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 14px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 11px 7px;
+      font-size: 13px;
+    }
+
+    .tab.active {
+      color: var(--text);
+      background: var(--panel2);
+      border-color: var(--accent);
+    }
+
+    .screen {
+      display: none;
+      min-height: 0;
+      flex: 1;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* =========================
+       CHAT
+    ========================= */
+
+    .settings {
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 9px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .settings input,
+    .settings textarea,
+    .search input,
+    .memory-form input,
+    .memory-form textarea,
+    .memory-form select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+    }
+
+    .settings textarea {
+      min-height: 65px;
+      resize: vertical;
+    }
+
+    .settings input:focus,
+    .settings textarea:focus,
+    .search input:focus,
+    .memory-form input:focus,
+    .memory-form textarea:focus,
+    .memory-form select:focus {
+      border-color: var(--accent);
+    }
+
+    .settings-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: -5px;
+    }
+
+    .chat {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 16px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      scroll-behavior: smooth;
+    }
+
+    .empty {
+      margin: auto;
+      max-width: 310px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.7;
+      padding: 25px;
+    }
+
+    .empty .emoji {
+      font-size: 35px;
+      margin-bottom: 10px;
+    }
+
+    .message {
+      display: flex;
+      flex-direction: column;
+      max-width: 86%;
+      gap: 5px;
+    }
+
+    .message.user {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .message.assistant {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .bubble {
+      padding: 11px 14px;
+      border-radius: 15px;
+      line-height: 1.6;
+      font-size: 14px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .user .bubble {
+      background: var(--user);
+      border-bottom-right-radius: 4px;
+    }
+
+    .assistant .bubble {
+      background: var(--assistant);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+    }
+
+    .message-time {
+      font-size: 10px;
+      color: var(--muted);
+      padding: 0 4px;
+    }
+
+    .composer {
+      padding: 12px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      border-top: 1px solid var(--border);
+      background: var(--panel);
+    }
+
+    .composer-row {
+      display: flex;
+      gap: 9px;
+      align-items: flex-end;
+    }
+
+    .composer textarea {
+      flex: 1;
+      min-width: 0;
+      resize: none;
+      max-height: 130px;
+      min-height: 45px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      line-height: 1.4;
+    }
+
+    .send {
+      height: 45px;
+      min-width: 54px;
+      border: 0;
+      border-radius: 12px;
+      color: #171322;
+      font-weight: 750;
+      background: var(--accent);
+    }
+
+    .composer-note {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* =========================
+       MEMORY
+    ========================= */
+
+    .memory-toolbar {
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .memory-toolbar select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: var(--panel);
+    }
+
+    .memory-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .memory-actions button {
+      flex: 1;
+    }
+
+    .memory-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 13px;
+    }
+
+    .memory-card {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .memory-card.inactive {
+      opacity: .65;
+    }
+
+    .memory-card p {
+      margin: 10px 0;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .memory-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .badge {
+      padding: 4px 7px;
+      border-radius: 6px;
+      background: var(--panel2);
+    }
+
+    .memory-empty {
+      padding: 25px 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .small-button {
+      border: 1px solid var(--border);
+      background: var(--panel2);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 9px 10px;
+      font-size: 12px;
+    }
+
+    .small-button.danger {
+      color: var(--danger);
+    }
+
+    .small-button.success {
+      color: var(--success);
+    }
+
+    .error {
+      color: var(--danger);
+    }
+
+    .success {
+      color: var(--success);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 9px;
+      color: var(--muted);
+      font-size: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .68);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      z-index: 1000;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 560px;
+      max-height: 90dvh;
+      overflow-y: auto;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .memory-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .memory-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+    }
+
+    @media (min-width: 650px) {
+      .settings {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .settings .personality-label,
+      .settings textarea {
+        grid-column: 1 / -1;
+      }
+
+      .message {
+        max-width: 75%;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .tabs {
+        gap: 5px;
+        padding: 9px;
+      }
+
+      .tab {
+        padding: 10px 4px;
+        font-size: 12px;
+      }
+
+      header {
+        padding: 14px 12px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <header>
-    <div>
-      <div class="brand">Remember <span>Me</span></div>
-      <div class="subtitle">Percakapan yang terus berlanjut.</div>
-    </div>
+  <header>
+    <div>
+      <div class="brand">Remember <span>Me</span></div>
+      <div class="subtitle">Percakapan yang terus berlanjut.</div>
+    </div>
 
-    <div class="status" id="connectionStatus">
-      Menghubungkan...
-    </div>
-  </header>
+    <div class="status" id="connectionStatus">
+      Menghubungkan...
+    </div>
+  </header>
 
-  <nav class="tabs">
-    <button class="tab active" data-screen="chatScreen">
-      💬 Chat
-    </button>
-    <button class="tab" id="newChatButton">
-      ＋ Chat Baru
-    </button>
-    <button class="tab" data-screen="memoryScreen">
-      📚 Buku Ingatan
-    </button>
-  </nav>
+  <nav class="tabs">
 
-  <!-- CHAT SCREEN -->
-  <section class="screen active" id="chatScreen">
+    <button class="tab active" data-screen="chatScreen">
+      💬 Chat
+    </button>
 
-    <div class="settings">
-      <div class="settings-label">Nama karakter</div>
-      <div class="settings-label">ID pengguna</div>
+    <button class="tab" id="newChatButton">
+      ＋ Chat Baru
+    </button>
 
-      <input
-        id="characterName"
-        value="Aruna"
-        maxlength="80"
-        placeholder="Nama karakter"
-      >
+    <button class="tab" data-screen="memoryScreen">
+      📚 Buku Ingatan
+    </button>
 
-      <input
-        id="userId"
-        value="remember-me-default"
-        maxlength="100"
-        placeholder="ID pengguna"
-      >
+  </nav>
 
-      <div class="settings-label personality-label">Kepribadian karakter</div>
-      <textarea
-        id="personality"
-        placeholder="Deskripsikan kepribadian karakter"
-      >Hangat, natural, santai, sedikit manja, dan suka bercanda. Berbicaralah seperti orang yang sedang mengobrol, bukan asisten layanan pelanggan. Tunjukkan kepribadian melalui reaksi dan pilihan kata. Jaga kesinambungan percakapan. Jangan mengarang kenangan yang tidak diketahui.</textarea>
-    </div>
+  <!-- =========================
+       CHAT SCREEN
+  ========================== -->
 
-    <div class="chat" id="chatMessages">
-      <div class="empty">
-        <div class="emoji">🌙</div>
-        <strong id="welcomeName">Aruna</strong>
-        <br>
-        Mulai saja percakapanmu.
-        Ceritakan apa pun yang ingin kamu bagi.
-      </div>
-    </div>
+  <section class="screen active" id="chatScreen">
 
-    <div class="composer">
-      <div class="composer-row">
-        <textarea
-          id="messageInput"
-          rows="1"
-          placeholder="Tulis pesan..."
-          maxlength="10000"
-        ></textarea>
+    <div class="settings">
 
-        <button class="send" id="sendButton">
-          Kirim
-        </button>
-      </div>
+      <div class="settings-label">
+        Nama karakter
+      </div>
 
-      <div class="composer-note">
-        Riwayat chat disimpan di perangkat ini.
-        Ingatan karakter tersimpan terpisah di server.
-      </div>
-    </div>
+      <div class="settings-label">
+        ID pengguna
+      </div>
 
-  </section>
+      <input
+        id="characterName"
+        value="Aruna"
+        maxlength="80"
+        placeholder="Nama karakter"
+      >
 
-  <!-- MEMORY SCREEN -->
-  <section class="screen" id="memoryScreen">
-    <div class="memory-toolbar">
-      <div class="search">
-        <input id="memorySearch" placeholder="Cari di buku ingatan...">
-      </div>
+      <input
+        id="userId"
+        value="remember-me-default"
+        maxlength="100"
+        placeholder="ID pengguna"
+      >
 
-      <select id="memoryCategory">
-        <option value="">Semua kategori</option>
-        <option value="identitas">Identitas</option>
-        <option value="preferensi">Preferensi</option>
-        <option value="keluarga">Keluarga</option>
-        <option value="pekerjaan">Pekerjaan</option>
-        <option value="pengalaman">Pengalaman</option>
-        <option value="rencana">Rencana</option>
-        <option value="lainnya">Lainnya</option>
-      </select>
+      <div class="settings-label personality-label">
+        Kepribadian karakter
+      </div>
 
-      <div class="memory-actions">
-        <button class="small-button" id="addMemoryButton">＋ Tambah</button>
-        <button class="small-button" id="refreshMemories">↻ Muat ulang</button>
-      </div>
-    </div>
+      <textarea
+        id="personality"
+        placeholder="Deskripsikan kepribadian karakter"
+      >Hangat, natural, santai, sedikit manja, dan suka bercanda. Berbicaralah seperti orang yang sedang mengobrol, bukan asisten layanan pelanggan. Tunjukkan kepribadian melalui reaksi dan pilihan kata. Jaga kesinambungan percakapan. Jangan mengarang kenangan yang tidak diketahui.</textarea>
 
-    <div class="memory-list" id="memoryList">
-      <div class="memory-empty">Memuat buku ingatan...</div>
-    </div>
-  </section>
+    </div>
 
-  <div class="footer">
-    Remember Me · Riwayat dan ingatan karakter
-  </div>
+    <div class="chat" id="chatMessages">
+
+      <div class="empty">
+
+        <div class="emoji">
+          🌙
+        </div>
+
+        <strong id="welcomeName">
+          Aruna
+        </strong>
+
+        <br>
+
+        Mulai saja percakapanmu.
+        Ceritakan apa pun yang ingin kamu bagi.
+
+      </div>
+
+    </div>
+
+    <div class="composer">
+
+      <div class="composer-row">
+
+        <textarea
+          id="messageInput"
+          rows="1"
+          placeholder="Tulis pesan..."
+          maxlength="10000"
+        ></textarea>
+
+        <button
+          class="send"
+          id="sendButton"
+        >
+          Kirim
+        </button>
+
+      </div>
+
+      <div class="composer-note">
+        Riwayat chat disimpan di perangkat ini.
+        Ingatan karakter tersimpan terpisah di server.
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+       MEMORY SCREEN
+  ========================== -->
+
+  <section
+    class="screen"
+    id="memoryScreen"
+  >
+
+    <div class="memory-toolbar">
+
+      <div class="search">
+
+        <input
+          id="memorySearch"
+          placeholder="Cari di buku ingatan..."
+        >
+
+      </div>
+
+      <select id="memoryCategory">
+
+        <option value="">
+          Semua kategori
+        </option>
+
+        <option value="identitas">
+          Identitas
+        </option>
+
+        <option value="preferensi">
+          Preferensi
+        </option>
+
+        <option value="keluarga">
+          Keluarga
+        </option>
+
+        <option value="pekerjaan">
+          Pekerjaan
+        </option>
+
+        <option value="pengalaman">
+          Pengalaman
+        </option>
+
+        <option value="rencana">
+          Rencana
+        </option>
+
+        <option value="lainnya">
+          Lainnya
+        </option>
+
+      </select>
+
+      <div class="memory-actions">
+
+        <button
+          class="small-button"
+          id="addMemoryButton"
+        >
+          ＋ Tambah
+        </button>
+
+        <button
+          class="small-button"
+          id="refreshMemories"
+        >
+          ↻ Muat ulang
+        </button>
+
+      </div>
+
+    </div>
+
+    <div
+      class="memory-list"
+      id="memoryList"
+    >
+
+      <div class="memory-empty">
+        Memuat buku ingatan...
+      </div>
+
+    </div>
+
+  </section>
+
+  <div class="footer">
+    Remember Me · Riwayat dan ingatan karakter
+  </div>
 
 </div>
 
-<!-- MEMORY MODAL -->
-<div class="modal" id="memoryModal">
-  <div class="modal-box">
-    <div class="modal-title" id="memoryModalTitle">Tambah Ingatan</div>
 
-    <div class="memory-form">
-      <div class="form-label">Isi ingatan</div>
-      <textarea id="memoryContent" maxlength="5000" placeholder="Contoh: Pengguna suka makan mi ayam."></textarea>
+<!-- =========================
+     MEMORY MODAL
+========================== -->
 
-      <div class="form-label">Kategori</div>
-      <select id="memoryCategoryForm">
-        <option value="identitas">Identitas</option>
-        <option value="preferensi">Preferensi</option>
-        <option value="keluarga">Keluarga</option>
-        <option value="pekerjaan">Pekerjaan</option>
-        <option value="pengalaman">Pengalaman</option>
-        <option value="rencana">Rencana</option>
-        <option value="lainnya">Lainnya</option>
-      </select>
+<div
+  class="modal"
+  id="memoryModal"
+>
 
-      <div class="form-label">Subkategori</div>
-      <input id="memorySubcategory" maxlength="100" placeholder="Opsional">
+  <div class="modal-box">
 
-      <div class="form-label">Nama subjek</div>
-      <input id="memorySubjectName" maxlength="150" placeholder="Contoh: Pengguna">
+    <div
+      class="modal-title"
+      id="memoryModalTitle"
+    >
+      Tambah Ingatan
+    </div>
 
-      <div class="form-label">Keyakinan</div>
-      <input id="memoryConfidence" type="number" min="0" max="1" step="0.1" value="0.9">
+    <div class="memory-form">
 
-      <div class="modal-actions">
-        <button class="small-button" id="cancelMemoryButton">Batal</button>
-        <button class="small-button" id="saveMemoryButton">Simpan</button>
-      </div>
-    </div>
-  </div>
+      <div class="form-label">
+        Isi ingatan
+      </div>
+
+      <textarea
+        id="memoryContent"
+        maxlength="5000"
+        placeholder="Contoh: Pengguna suka makan mi ayam."
+      ></textarea>
+
+      <div class="form-label">
+        Kategori
+      </div>
+
+      <select id="memoryCategoryForm">
+
+        <option value="identitas">
+          Identitas
+        </option>
+
+        <option value="preferensi">
+          Preferensi
+        </option>
+
+        <option value="keluarga">
+          Keluarga
+        </option>
+
+        <option value="pekerjaan">
+          Pekerjaan
+        </option>
+
+        <option value="pengalaman">
+          Pengalaman
+        </option>
+
+        <option value="rencana">
+          Rencana
+        </option>
+
+        <option value="lainnya">
+          Lainnya
+        </option>
+
+      </select>
+
+      <div class="form-label">
+        Subkategori
+      </div>
+
+      <input
+        id="memorySubcategory"
+        maxlength="100"
+        placeholder="Opsional"
+      >
+
+      <div class="form-label">
+        Nama subjek
+      </div>
+
+      <input
+        id="memorySubjectName"
+        maxlength="150"
+        placeholder="Contoh: Pengguna"
+      >
+
+      <div class="form-label">
+        Keyakinan
+      </div>
+
+      <input
+        id="memoryConfidence"
+        type="number"
+        min="0"
+        max="1"
+        step="0.1"
+        value="0.9"
+      >
+
+      <div class="modal-actions">
+
+        <button
+          class="small-button"
+          id="cancelMemoryButton"
+        >
+          Batal
+        </button>
+
+        <button
+          class="small-button"
+          id="saveMemoryButton"
+        >
+          Simpan
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
+
 
 <script>
 "use strict";
 
-const API = "https://soulmate-ai-api.kharishabibh.workers.dev/";
+
+/* ==================================================
+   KONFIGURASI
+================================================== */
+
+const API =
+  "https://soulmate-ai-api.kharishabibh.workers.dev/";
+
 const LOCAL_HISTORY_LIMIT = 80;
 const REQUEST_HISTORY_LIMIT = 80;
 
-const $ = id => document.getElementById(id);
+
+/* ==================================================
+   DOM HELPER
+================================================== */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+/* ==================================================
+   STATE
+================================================== */
 
 const state = {
-  history: [],
-  memories: [],
-  conversationId: null,
-  sending: false,
-  serverAvailable: false,
-  editingMemoryId: null
+
+  history: [],
+
+  memories: [],
+
+  conversationId: null,
+
+  sending: false,
+
+  serverAvailable: false,
+
+  editingMemoryId: null
+
 };
 
+
+/* ==================================================
+   ID
+================================================== */
+
 function makeId() {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-    return crypto.randomUUID();
-  }
-  return "id-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
+
+    return crypto.randomUUID();
+
+  }
+
+  return (
+    "id-" +
+    Date.now() +
+    "-" +
+    Math.random()
+      .toString(36)
+      .slice(2)
+  );
+
 }
+
+
+/* ==================================================
+   CURRENT USER / CHARACTER
+================================================== */
 
 function currentCharacter() {
-  return $("characterName").value.trim() || "Aruna";
+
+  return (
+    $("characterName")
+      .value
+      .trim() ||
+    "Aruna"
+  );
+
 }
+
 
 function currentUserId() {
-  return $("userId").value.trim() || "remember-me-default";
+
+  return (
+    $("userId")
+      .value
+      .trim() ||
+    "remember-me-default"
+  );
+
 }
+
+
+/* ==================================================
+   LOCAL STORAGE
+================================================== */
 
 function legacyHistoryKey() {
-  return "remember-me-history-v2-" + encodeURIComponent(currentUserId()) + "-" + encodeURIComponent(currentCharacter());
+
+  return (
+    "remember-me-history-v2-" +
+    encodeURIComponent(currentUserId()) +
+    "-" +
+    encodeURIComponent(currentCharacter())
+  );
+
 }
+
 
 function activeConversationKey() {
-  return "remember-me-active-conversation-v1-" + encodeURIComponent(currentUserId()) + "-" + encodeURIComponent(currentCharacter());
+
+  return (
+    "remember-me-active-conversation-v1-" +
+    encodeURIComponent(currentUserId()) +
+    "-" +
+    encodeURIComponent(currentCharacter())
+  );
+
 }
 
-function conversationHistoryKey(conversationId) {
-  return "remember-me-conversation-v1-" + encodeURIComponent(currentUserId()) + "-" + encodeURIComponent(currentCharacter()) + "-" + encodeURIComponent(conversationId);
+
+function conversationHistoryKey(
+  conversationId
+) {
+
+  return (
+    "remember-me-conversation-v1-" +
+    encodeURIComponent(currentUserId()) +
+    "-" +
+    encodeURIComponent(currentCharacter()) +
+    "-" +
+    encodeURIComponent(conversationId)
+  );
+
 }
+
 
 function getActiveConversationId() {
-  const key = activeConversationKey();
-  let conversationId = localStorage.getItem(key);
-  if (conversationId) return conversationId;
 
-  conversationId = makeId();
-  const newHistoryKey = conversationHistoryKey(conversationId);
-  const oldHistoryKey = legacyHistoryKey();
+  const key =
+    activeConversationKey();
 
-  localStorage.setItem(key, conversationId);
-  if (localStorage.getItem(newHistoryKey) === null && localStorage.getItem(oldHistoryKey) !== null) {
-    localStorage.setItem(newHistoryKey, localStorage.getItem(oldHistoryKey));
-  }
-  return conversationId;
+  let conversationId =
+    localStorage.getItem(key);
+
+  if (conversationId) {
+
+    return conversationId;
+
+  }
+
+  conversationId =
+    makeId();
+
+  const newHistoryKey =
+    conversationHistoryKey(
+      conversationId
+    );
+
+  const oldHistoryKey =
+    legacyHistoryKey();
+
+  localStorage.setItem(
+    key,
+    conversationId
+  );
+
+  if (
+    localStorage.getItem(newHistoryKey) === null &&
+    localStorage.getItem(oldHistoryKey) !== null
+  ) {
+
+    localStorage.setItem(
+      newHistoryKey,
+      localStorage.getItem(oldHistoryKey)
+    );
+
+  }
+
+  return conversationId;
+
 }
 
-function setStatus(text, isError = false) {
-  const el = $("connectionStatus");
-  el.textContent = text;
-  el.classList.toggle("error", isError);
+
+/* ==================================================
+   STATUS
+================================================== */
+
+function setStatus(
+  text,
+  isError = false
+) {
+
+  const el =
+    $("connectionStatus");
+
+  el.textContent =
+    text;
+
+  el.classList.toggle(
+    "error",
+    isError
+  );
+
 }
+
+
+/* ==================================================
+   TEXT
+================================================== */
 
 function safeText(value) {
-  return String(value ?? "");
+
+  return String(
+    value ?? ""
+  );
+
 }
+
+
+/* ==================================================
+   NORMALIZE MESSAGE
+================================================== */
 
 function normalizeMessage(item) {
-  return {
-    id: item.id || makeId(),
-    role: item.role === "assistant" ? "assistant" : "user",
-    content: safeText(item.content),
-    time: item.time || new Date().toISOString(),
-    memoryProposal: item.memoryProposal || null
-  };
+
+  return {
+
+    id:
+      item.id ||
+      makeId(),
+
+    role:
+      item.role === "assistant"
+        ? "assistant"
+        : "user",
+
+    content:
+      safeText(item.content),
+
+    time:
+      item.time ||
+      new Date().toISOString()
+
+  };
+
 }
+
+
+/* ==================================================
+   LOAD CHAT
+================================================== */
 
 function loadLocalHistory() {
-  try {
-    state.conversationId = getActiveConversationId();
-    const raw = localStorage.getItem(conversationHistoryKey(state.conversationId));
-    const parsed = raw ? JSON.parse(raw) : [];
 
-    state.history = Array.isArray(parsed)
-      ? parsed.map(normalizeMessage).slice(-LOCAL_HISTORY_LIMIT)
-      : [];
-    saveLocalHistory();
-  } catch (error) {
-    console.error("Gagal membaca riwayat lokal:", error);
-    state.history = [];
-  }
-  renderHistory();
+  try {
+
+    state.conversationId =
+      getActiveConversationId();
+
+    const raw =
+      localStorage.getItem(
+        conversationHistoryKey(
+          state.conversationId
+        )
+      );
+
+    const parsed =
+      raw
+        ? JSON.parse(raw)
+        : [];
+
+    state.history =
+      Array.isArray(parsed)
+        ? parsed
+            .map(normalizeMessage)
+            .slice(-LOCAL_HISTORY_LIMIT)
+        : [];
+
+    saveLocalHistory();
+
+  } catch (error) {
+
+    console.error(
+      "Gagal membaca riwayat lokal:",
+      error
+    );
+
+    state.history = [];
+
+  }
+
+  renderHistory();
+
 }
+
+
+/* ==================================================
+   SAVE CHAT
+================================================== */
 
 function saveLocalHistory() {
-  try {
-    state.history = state.history.slice(-LOCAL_HISTORY_LIMIT);
-    if (!state.conversationId) {
-      state.conversationId = getActiveConversationId();
-    }
-    localStorage.setItem(conversationHistoryKey(state.conversationId), JSON.stringify(state.history));
-  } catch (error) {
-    console.error("Gagal menyimpan riwayat lokal:", error);
-    setStatus("Penyimpanan lokal gagal", true);
-  }
+
+  try {
+
+    state.history =
+      state.history.slice(
+        -LOCAL_HISTORY_LIMIT
+      );
+
+    if (!state.conversationId) {
+
+      state.conversationId =
+        getActiveConversationId();
+
+    }
+
+    localStorage.setItem(
+
+      conversationHistoryKey(
+        state.conversationId
+      ),
+
+      JSON.stringify(
+        state.history
+      )
+
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Gagal menyimpan riwayat lokal:",
+      error
+    );
+
+    setStatus(
+      "Penyimpanan lokal gagal",
+      true
+    );
+
+  }
+
 }
+
+
+/* ==================================================
+   TIME
+================================================== */
 
 function formatTime(value) {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "";
-  return date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+
+  const date =
+    new Date(value);
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "";
+
+  }
+
+  return date.toLocaleTimeString(
+    "id-ID",
+    {
+      hour: "2-digit",
+      minute: "2-digit"
+    }
+  );
+
 }
+
+
+/* ==================================================
+   RENDER CHAT
+================================================== */
 
 function renderHistory() {
-  const container = $("chatMessages");
-  container.replaceChildren();
 
-  if (!state.history.length) {
-    const empty = document.createElement("div");
-    empty.className = "empty";
-    empty.innerHTML = `<div class="emoji">🌙</div><strong id="welcomeName">${currentCharacter()}</strong><br>Mulai saja percakapanmu. Ceritakan apa pun yang ingin kamu bagi.`;
-    container.appendChild(empty);
-    return;
-  }
+  const container =
+    $("chatMessages");
 
-  for (const item of state.history) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "message " + item.role;
-    wrapper.dataset.messageId = item.id;
+  container.replaceChildren();
 
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
-    bubble.textContent = item.content;
+  if (!state.history.length) {
 
-    const time = document.createElement("div");
-    time.className = "message-time";
-    time.textContent = formatTime(item.time);
+    const empty =
+      document.createElement("div");
 
-    wrapper.append(bubble, time);
+    empty.className =
+      "empty";
 
-    // TAMPILKAN KARTU INGATAN JIKA AI MENEMUKAN FAKTA
-    if (item.role === "assistant" && item.memoryProposal && !item.memoryProposal.handled) {
-      const card = document.createElement("div");
-      card.className = "memory-card-inline";
-      card.innerHTML = `
-        <div class="memory-card-header">🧠 Mungkin layak diingat</div>
-        <div class="memory-card-body">${safeText(item.memoryProposal.content)}</div>
-        <div class="memory-card-actions">
-          <button class="btn-yes" title="Simpan">👍</button>
-          <button class="btn-no" title="Tolak">👎</button>
-          <button class="btn-close" title="Abaikan">×</button>
-        </div>
-      `;
+    const emoji =
+      document.createElement("div");
 
-      const btnYes = card.querySelector(".btn-yes");
-      const btnNo = card.querySelector(".btn-no");
-      const btnClose = card.querySelector(".btn-close");
+    emoji.className =
+      "emoji";
 
-      btnYes.addEventListener("click", async () => {
-        card.querySelector(".memory-card-header").textContent = "✓ Diingat";
-        card.querySelector(".memory-card-header").style.color = "var(--success)";
-        card.querySelector(".memory-card-actions").remove();
-        item.memoryProposal.handled = true;
-        saveLocalHistory();
+    emoji.textContent =
+      "🌙";
 
-        try {
-          await fetch(API + "memories", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              userId: currentUserId(),
-              characterId: currentCharacter(),
-              content: item.memoryProposal.content,
-              category: item.memoryProposal.category || "preferensi"
-            })
-          });
-        } catch (err) {
-          console.error("Gagal simpan memori:", err);
-        }
+    const strong =
+      document.createElement("strong");
 
-        setTimeout(() => {
-          card.style.opacity = "0";
-          setTimeout(() => card.remove(), 300);
-        }, 1500);
-      });
+    strong.textContent =
+      currentCharacter();
 
-      btnNo.addEventListener("click", () => {
-        card.querySelector(".memory-card-header").textContent = "";
-        card.querySelector(".memory-card-body").textContent = "Tidak akan disimpan.";
-        card.querySelector(".memory-card-actions").remove();
-        item.memoryProposal.handled = true;
-        saveLocalHistory();
+    const line =
+      document.createElement("div");
 
-        setTimeout(() => {
-          card.style.opacity = "0";
-          setTimeout(() => card.remove(), 300);
-        }, 1200);
-      });
+    line.textContent =
+      "Mulai saja percakapanmu. Ceritakan apa pun yang ingin kamu bagi.";
 
-      btnClose.addEventListener("click", () => {
-        card.style.opacity = "0";
-        setTimeout(() => card.remove(), 200);
-        item.memoryProposal.handled = true;
-        saveLocalHistory();
-      });
+    empty.append(
+      emoji,
+      strong,
+      document.createElement("br"),
+      line
+    );
 
-      wrapper.appendChild(card);
-    }
+    container.appendChild(
+      empty
+    );
 
-    container.appendChild(wrapper);
-  }
+    return;
 
-  container.scrollTop = container.scrollHeight;
+  }
+
+
+  for (
+    const item of state.history
+  ) {
+
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.className =
+      "message " +
+      item.role;
+
+    wrapper.dataset.messageId =
+      item.id;
+
+    const bubble =
+      document.createElement("div");
+
+    bubble.className =
+      "bubble";
+
+    bubble.textContent =
+      item.content;
+
+    const time =
+      document.createElement("div");
+
+    time.className =
+      "message-time";
+
+    time.textContent =
+      formatTime(
+        item.time
+      );
+
+    wrapper.append(
+      bubble,
+      time
+    );
+
+    container.appendChild(
+      wrapper
+    );
+
+  }
+
+
+  container.scrollTop =
+    container.scrollHeight;
+
 }
 
-function addMessage(role, content, id = makeId(), time = new Date().toISOString(), memoryProposal = null) {
-  const item = normalizeMessage({ id, role, content, time, memoryProposal });
-  state.history.push(item);
-  saveLocalHistory();
-  renderHistory();
-  return item;
+
+/* ==================================================
+   ADD MESSAGE
+================================================== */
+
+function addMessage(
+  role,
+  content,
+  id = makeId(),
+  time = new Date().toISOString()
+) {
+
+  const item =
+    normalizeMessage({
+
+      id,
+
+      role,
+
+      content,
+
+      time
+
+    });
+
+  state.history.push(
+    item
+  );
+
+  saveLocalHistory();
+
+  renderHistory();
+
+  return item;
+
 }
+
+
+/* ==================================================
+   NEW CHAT
+================================================== */
 
 function startNewChat() {
-  if (state.sending) {
-    alert("Tunggu balasan selesai dulu, bro.");
-    return;
-  }
-  try {
-    const conversationId = makeId();
-    localStorage.setItem(activeConversationKey(), conversationId);
-    state.conversationId = conversationId;
-    state.history = [];
-    renderHistory();
-    $("messageInput").value = "";
-    $("messageInput").style.height = "auto";
-    showScreen("chatScreen");
-    setStatus("Chat baru siap");
-    $("messageInput").focus();
-  } catch (error) {
-    console.error("Gagal membuat chat baru:", error);
-    setStatus("Gagal membuat chat baru", true);
-  }
+
+  if (state.sending) {
+
+    alert(
+      "Tunggu balasan selesai dulu, bro."
+    );
+
+    return;
+
+  }
+
+  try {
+
+    const conversationId =
+      makeId();
+
+    localStorage.setItem(
+
+      activeConversationKey(),
+
+      conversationId
+
+    );
+
+    state.conversationId =
+      conversationId;
+
+    state.history = [];
+
+    renderHistory();
+
+    $("messageInput").value =
+      "";
+
+    $("messageInput").style.height =
+      "auto";
+
+    showScreen(
+      "chatScreen"
+    );
+
+    setStatus(
+      "Chat baru siap"
+    );
+
+    $("messageInput").focus();
+
+  } catch (error) {
+
+    console.error(
+      "Gagal membuat chat baru:",
+      error
+    );
+
+    setStatus(
+      "Gagal membuat chat baru",
+      true
+    );
+
+    alert(
+      "Chat baru gagal dibuat."
+    );
+
+  }
+
 }
+
+
+/* ==================================================
+   CHECK SERVER
+================================================== */
 
 async function checkConnection() {
-  try {
-    const response = await fetch(API + "health", { method: "GET" });
-    if (!response.ok) throw new Error("HTTP " + response.status);
-    state.serverAvailable = true;
-    setStatus("Server terhubung");
-  } catch (error) {
-    state.serverAvailable = false;
-    setStatus("Server belum terhubung", true);
-  }
+
+  try {
+
+    const response =
+      await fetch(
+        API + "health",
+        {
+          method: "GET"
+        }
+      );
+
+    if (!response.ok) {
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
+    }
+
+    state.serverAvailable =
+      true;
+
+    setStatus(
+      "Server terhubung"
+    );
+
+  } catch (error) {
+
+    state.serverAvailable =
+      false;
+
+    setStatus(
+      "Server belum terhubung",
+      true
+    );
+
+    console.warn(
+      "Pemeriksaan server:",
+      error
+    );
+
+  }
+
 }
+
+
+/* ==================================================
+   SEND MESSAGE
+================================================== */
 
 async function sendMessage() {
-  const input = $("messageInput");
-  const button = $("sendButton");
-  const message = input.value.trim();
 
-  if (!message || state.sending) return;
-  if (!state.conversationId) state.conversationId = getActiveConversationId();
+  const input =
+    $("messageInput");
 
-  state.sending = true;
-  button.disabled = true;
-  button.textContent = "...";
+  const button =
+    $("sendButton");
 
-  const characterName = currentCharacter();
-  const conversationId = state.conversationId;
-  const clientMessageId = makeId();
-  const clientTime = new Date().toISOString();
+  const message =
+    input.value.trim();
 
-  setStatus("Mengirim pesan...");
+  if (!message) {
 
-  try {
-    addMessage("user", message, clientMessageId, clientTime);
-    input.value = "";
-    input.style.height = "auto";
+    input.focus();
 
-    const response = await fetch(API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: currentUserId(),
-        characterId: characterName,
-        characterName: characterName,
-        conversationId: conversationId,
-        personality: $("personality").value.trim(),
-        message: message,
-        clientMessageId: clientMessageId,
-        clientTime: clientTime,
-        history: state.history.slice(-REQUEST_HISTORY_LIMIT).map(item => ({
-          id: item.id,
-          role: item.role,
-          content: item.content,
-          time: item.time
-        }))
-      })
-    });
+    return;
 
-    const data = await response.json();
-    if (!response.ok || data.error) throw new Error(data.error || "HTTP " + response.status);
+  }
 
-    const reply = safeText(data.reply || data.response).trim();
-    if (!reply) throw new Error("Server tidak mengirim balasan.");
+  if (state.sending) {
 
-    if (state.conversationId !== conversationId) return;
+    return;
 
-    // AMBIL USULAN MEMORI DARI SERVER APABILA ADA
-    const memoryProposal = data.memoryProposal || null;
+  }
 
-    addMessage(
-      "assistant",
-      reply,
-      data.assistantMessageId || makeId(),
-      data.assistantTime || new Date().toISOString(),
-      memoryProposal
-    );
+  if (!state.conversationId) {
 
-    setStatus("Server terhubung");
-  } catch (error) {
-    setStatus("Gagal: " + error.message, true);
-    alert("Pesan gagal dikirim:\n" + error.message);
-  } finally {
-    state.sending = false;
-    button.disabled = false;
-    button.textContent = "Kirim";
-  }
+    state.conversationId =
+      getActiveConversationId();
+
+  }
+
+  state.sending =
+    true;
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "...";
+
+  const characterName =
+    currentCharacter();
+
+  const conversationId =
+    state.conversationId;
+
+  const clientMessageId =
+    makeId();
+
+  const clientTime =
+    new Date().toISOString();
+
+  setStatus(
+    "Mengirim pesan..."
+  );
+
+  const controller =
+    new AbortController();
+
+  const timeout =
+    setTimeout(
+      () => {
+        controller.abort();
+      },
+      60000
+    );
+
+  try {
+
+    const response =
+      await fetch(
+        API,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          signal:
+            controller.signal,
+
+          body:
+            JSON.stringify({
+
+              userId:
+                currentUserId(),
+
+              characterId:
+                characterName,
+
+              characterName:
+                characterName,
+
+              conversationId:
+                conversationId,
+
+              personality:
+                $("personality")
+                  .value
+                  .trim(),
+
+              message:
+                message,
+
+              clientMessageId:
+                clientMessageId,
+
+              clientTime:
+                clientTime,
+
+              history:
+                state.history
+                  .slice(
+                    -REQUEST_HISTORY_LIMIT
+                  )
+                  .map(
+                    item => ({
+                      id: item.id,
+                      role: item.role,
+                      content: item.content,
+                      time: item.time
+                    })
+                  )
+
+            })
+
+        }
+      );
+
+    let data;
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch {
+
+      throw new Error(
+        "Respons server bukan JSON."
+      );
+
+    }
+
+    if (
+      !response.ok ||
+      data.error
+    ) {
+
+      throw new Error(
+        data.error ||
+        "HTTP " +
+        response.status
+      );
+
+    }
+
+    const reply =
+      safeText(
+        data.reply ||
+        data.response
+      ).trim();
+
+    if (!reply) {
+
+      throw new Error(
+        "Server tidak mengirim balasan."
+      );
+
+    }
+
+    if (
+      state.conversationId !==
+      conversationId
+    ) {
+
+      return;
+
+    }
+
+    addMessage(
+      "user",
+      message,
+      clientMessageId,
+      clientTime
+    );
+
+    addMessage(
+      "assistant",
+      reply,
+      data.assistantMessageId ||
+        makeId(),
+      data.assistantTime ||
+        new Date().toISOString()
+    );
+
+    input.value =
+      "";
+
+    input.style.height =
+      "auto";
+
+    setStatus(
+      "Server terhubung"
+    );
+
+  } catch (error) {
+
+    const detail =
+      error.name === "AbortError"
+        ? "Server tidak merespons dalam 60 detik."
+        : error.message ||
+          "Koneksi gagal.";
+
+    setStatus(
+      "Gagal: " + detail,
+      true
+    );
+
+    alert(
+      "Pesan gagal dikirim:\n" +
+      detail
+    );
+
+  } finally {
+
+    clearTimeout(
+      timeout
+    );
+
+    state.sending =
+      false;
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Kirim";
+
+  }
+
 }
 
-function showScreen(screenId) {
-  document.querySelectorAll(".screen").forEach(screen => {
-    screen.classList.toggle("active", screen.id === screenId);
-  });
-  document.querySelectorAll(".tab[data-screen]").forEach(tab => {
-    tab.classList.toggle("active", tab.dataset.screen === screenId);
-  });
-  if (screenId === "memoryScreen") loadMemories();
+
+/* ==================================================
+   SCREEN
+================================================== */
+
+function showScreen(
+  screenId
+) {
+
+  document
+    .querySelectorAll(
+      ".screen"
+    )
+    .forEach(
+      screen => {
+
+        screen.classList.toggle(
+          "active",
+          screen.id === screenId
+        );
+
+      }
+    );
+
+  document
+    .querySelectorAll(
+      ".tab[data-screen]"
+    )
+    .forEach(
+      tab => {
+
+        tab.classList.toggle(
+          "active",
+          tab.dataset.screen ===
+          screenId
+        );
+
+      }
+    );
+
+  if (
+    screenId ===
+    "memoryScreen"
+  ) {
+
+    loadMemories();
+
+  }
+
 }
+
+
+/* ==================================================
+   LOAD MEMORIES
+================================================== */
 
 async function loadMemories() {
-  const container = $("memoryList");
-  container.innerHTML = '<div class="memory-empty">Memuat buku ingatan...</div>';
 
-  const params = new URLSearchParams({
-    userId: currentUserId(),
-    characterId: currentCharacter()
-  });
+  const container =
+    $("memoryList");
 
-  try {
-    const response = await fetch(API + "memories?" + params.toString());
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "HTTP " + response.status);
+  container.innerHTML =
+    '<div class="memory-empty">Memuat buku ingatan...</div>';
 
-    state.memories = Array.isArray(data.memories) ? data.memories : [];
-    renderMemories();
-  } catch (error) {
-    container.innerHTML = '<div class="memory-empty">Buku ingatan belum bisa dimuat.</div>';
-  }
+  const params =
+    new URLSearchParams({
+
+      userId:
+        currentUserId(),
+
+      characterId:
+        currentCharacter()
+
+    });
+
+  try {
+
+    const response =
+      await fetch(
+        API +
+        "memories?" +
+        params.toString()
+      );
+
+    let data;
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch {
+
+      throw new Error(
+        "Respons server bukan JSON."
+      );
+
+    }
+
+    if (!response.ok) {
+
+      throw new Error(
+        data.error ||
+        "HTTP " +
+        response.status
+      );
+
+    }
+
+    state.memories =
+      Array.isArray(
+        data.memories
+      )
+        ? data.memories
+        : [];
+
+    renderMemories();
+
+  } catch (error) {
+
+    console.error(
+      "Gagal memuat ingatan:",
+      error
+    );
+
+    container.replaceChildren();
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "memory-empty";
+
+    empty.textContent =
+      "Buku ingatan belum bisa dimuat. Pastikan endpoint /memories tersedia di Worker.";
+
+    container.appendChild(
+      empty
+    );
+
+  }
+
 }
+
+
+/* ==================================================
+   RENDER MEMORIES
+================================================== */
 
 function renderMemories() {
-  const container = $("memoryList");
-  container.replaceChildren();
 
-  const search = $("memorySearch").value.trim().toLowerCase();
-  const category = $("memoryCategory").value;
+  const container =
+    $("memoryList");
 
-  const filtered = state.memories.filter(memory => {
-    const content = safeText(memory.content || memory.memory);
-    const text = (content + " " + safeText(memory.category) + " " + safeText(memory.subject_name)).toLowerCase();
-    return (!search || text.includes(search)) && (!category || memory.category === category);
-  });
+  container.replaceChildren();
 
-  if (!filtered.length) {
-    const empty = document.createElement("div");
-    empty.className = "memory-empty";
-    empty.textContent = state.memories.length ? "Tidak ada ingatan yang cocok." : "Belum ada ingatan.";
-    container.appendChild(empty);
-    return;
-  }
+  const search =
+    $("memorySearch")
+      .value
+      .trim()
+      .toLowerCase();
 
-  for (const memory of filtered) {
-    const card = document.createElement("article");
-    card.className = "memory-card";
-    if (Number(memory.is_active) === 0) card.classList.add("inactive");
+  const category =
+    $("memoryCategory")
+      .value;
 
-    const p = document.createElement("p");
-    p.textContent = safeText(memory.content || memory.memory);
+  const filtered =
+    state.memories.filter(
+      memory => {
 
-    const meta = document.createElement("div");
-    meta.className = "memory-meta";
-    meta.innerHTML = `<span class="badge">${safeText(memory.category || "lainnya")}</span>`;
+        const content =
+          safeText(
+            memory.content ||
+            memory.memory
+          );
 
-    card.append(p, meta);
-    container.appendChild(card);
-  }
-}
+        const text =
+          (
+            content +
+            " " +
+            safeText(
+              memory.category
+            ) +
+            " " +
+            safeText(
+              memory.subject_name
+            ) +
+            " " +
+            safeText(
+              memory.subcategory
+            )
+          ).toLowerCase();
 
-// Event Listeners
-document.querySelectorAll(".tab[data-screen]").forEach(tab => {
-  tab.addEventListener("click", () => showScreen(tab.dataset.screen));
-});
+        const matchesSearch =
+          !search ||
+          text.includes(search);
 
-$("newChatButton").addEventListener("click", startNewChat);
-$("sendButton").addEventListener("click", sendMessage);
-$("messageInput").addEventListener("keydown", e => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-});
+        const matchesCategory =
+          !category ||
+          memory.category ===
+            category;
 
-$("memorySearch").addEventListener("input", renderMemories);
-$("memoryCategory").addEventListener("change", renderMemories);
-$("refreshMemories").addEventListener("click", loadMemories);
+        return (
+          matchesSearch &&
+          matchesCategory
+        );
 
-$("addMemoryButton").addEventListener("click", () => {
-  $("memoryModalTitle").textContent = "Tambah Ingatan";
-  $("memoryContent").value = "";
-  $("memorySubcategory").value = "";
-  $("memorySubjectName").value = "Pengguna";
-  $("memoryConfidence").value = "0.9";
-  $("memoryModal").classList.add("show");
-});
+      }
+    );
 
-$("cancelMemoryButton").addEventListener("click", () => {
-  $("memoryModal").classList.remove("show");
-});
+  if (!filtered.length) {
 
-$("saveMemoryButton").addEventListener("click", async () => {
-  const content = $("memoryContent").value.trim();
-  if (!content) {
-    alert("Isi ingatan tidak boleh kosong.");
-    return;
-  }
+    const empty =
+      document.createElement(
+        "div"
+      );
 
-  try {
-    const response = await fetch(API + "memories", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: currentUserId(),
-        characterId: currentCharacter(),
-        content: content,
-        category: $("memoryCategoryForm").value,
-        subcategory: $("memorySubcategory").value.trim(),
-        subject_name: $("memorySubjectName").value.trim(),
-        confidence: parseFloat($("memoryConfidence").value) || 0.9
-      })
-    });
+    empty.className =
+      "memory-empty";
 
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Gagal menyimpan ingatan.");
+    empty.textContent =
+      state.memories.length
+        ? "Tidak ada ingatan yang cocok dengan pencarian."
+        : "Belum ada ingatan yang dikirim server.";
 
-    $("memoryModal").classList.remove("show");
-    loadMemories();
-  } catch (error) {
-    alert("Gagal: " + error.message);
-  }
-});
+    container.appendChild(
+      empty
+    );
 
-// Inisialisasi awal
-loadLocalHistory();
-checkConnection();
-</script>
+    return;
 
-</body>
-</html>
+  }
+
+
+  for (
+    const memory of filtered
+  ) {
+
+    const card =
+      document.createElement(
+        "article"
+      );
+
+    card.className =
+      "memory-card";
+
+    if (
+      Number(memory.is_active) ===
+      0
+    ) {
+
+      card.classList.ad
