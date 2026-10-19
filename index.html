@@ -244,6 +244,59 @@
       padding: 0 4px;
     }
 
+    /* =========================
+       MEMORY PROPOSAL CARD (IN-CHAT)
+    ========================= */
+    .memory-card-inline {
+      align-self: flex-start;
+      width: 100%;
+      max-width: 340px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-top: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .memory-card-header {
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .memory-card-body {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .memory-card-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .memory-card-actions button {
+      flex: 1;
+      padding: 6px;
+      border-radius: 8px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel2);
+      color: var(--text);
+    }
+
+    .memory-card-actions button:hover {
+      border-color: var(--accent);
+    }
+
     .composer {
       padding: 12px;
       padding-bottom: max(12px, env(safe-area-inset-bottom));
@@ -511,36 +564,25 @@
   </header>
 
   <nav class="tabs">
-
     <button class="tab active" data-screen="chatScreen">
       💬 Chat
     </button>
-
     <button class="tab" id="newChatButton">
       ＋ Chat Baru
     </button>
-
     <button class="tab" data-screen="memoryScreen">
       📚 Buku Ingatan
     </button>
-
   </nav>
 
   <!-- =========================
-       CHAT SCREEN
+     CHAT SCREEN
   ========================== -->
-
   <section class="screen active" id="chatScreen">
 
     <div class="settings">
-
-      <div class="settings-label">
-        Nama karakter
-      </div>
-
-      <div class="settings-label">
-        ID pengguna
-      </div>
+      <div class="settings-label">Nama karakter</div>
+      <div class="settings-label">ID pengguna</div>
 
       <input
         id="characterName"
@@ -556,42 +598,25 @@
         placeholder="ID pengguna"
       >
 
-      <div class="settings-label personality-label">
-        Kepribadian karakter
-      </div>
-
+      <div class="settings-label personality-label">Kepribadian karakter</div>
       <textarea
         id="personality"
         placeholder="Deskripsikan kepribadian karakter"
       >Hangat, natural, santai, sedikit manja, dan suka bercanda. Berbicaralah seperti orang yang sedang mengobrol, bukan asisten layanan pelanggan. Tunjukkan kepribadian melalui reaksi dan pilihan kata. Jaga kesinambungan percakapan. Jangan mengarang kenangan yang tidak diketahui.</textarea>
-
     </div>
 
     <div class="chat" id="chatMessages">
-
       <div class="empty">
-
-        <div class="emoji">
-          🌙
-        </div>
-
-        <strong id="welcomeName">
-          Aruna
-        </strong>
-
+        <div class="emoji">🌙</div>
+        <strong id="welcomeName">Aruna</strong>
         <br>
-
         Mulai saja percakapanmu.
         Ceritakan apa pun yang ingin kamu bagi.
-
       </div>
-
     </div>
 
     <div class="composer">
-
       <div class="composer-row">
-
         <textarea
           id="messageInput"
           rows="1"
@@ -599,111 +624,48 @@
           maxlength="10000"
         ></textarea>
 
-        <button
-          class="send"
-          id="sendButton"
-        >
+        <button class="send" id="sendButton">
           Kirim
         </button>
-
       </div>
 
       <div class="composer-note">
         Riwayat chat disimpan di perangkat ini.
         Ingatan karakter tersimpan terpisah di server.
       </div>
-
     </div>
 
   </section>
 
   <!-- =========================
-       MEMORY SCREEN
+     MEMORY SCREEN
   ========================== -->
-
-  <section
-    class="screen"
-    id="memoryScreen"
-  >
-
+  <section class="screen" id="memoryScreen">
     <div class="memory-toolbar">
-
       <div class="search">
-
-        <input
-          id="memorySearch"
-          placeholder="Cari di buku ingatan..."
-        >
-
+        <input id="memorySearch" placeholder="Cari di buku ingatan...">
       </div>
 
       <select id="memoryCategory">
-
-        <option value="">
-          Semua kategori
-        </option>
-
-        <option value="identitas">
-          Identitas
-        </option>
-
-        <option value="preferensi">
-          Preferensi
-        </option>
-
-        <option value="keluarga">
-          Keluarga
-        </option>
-
-        <option value="pekerjaan">
-          Pekerjaan
-        </option>
-
-        <option value="pengalaman">
-          Pengalaman
-        </option>
-
-        <option value="rencana">
-          Rencana
-        </option>
-
-        <option value="lainnya">
-          Lainnya
-        </option>
-
+        <option value="">Semua kategori</option>
+        <option value="identitas">Identitas</option>
+        <option value="preferensi">Preferensi</option>
+        <option value="keluarga">Keluarga</option>
+        <option value="pekerjaan">Pekerjaan</option>
+        <option value="pengalaman">Pengalaman</option>
+        <option value="rencana">Rencana</option>
+        <option value="lainnya">Lainnya</option>
       </select>
 
       <div class="memory-actions">
-
-        <button
-          class="small-button"
-          id="addMemoryButton"
-        >
-          ＋ Tambah
-        </button>
-
-        <button
-          class="small-button"
-          id="refreshMemories"
-        >
-          ↻ Muat ulang
-        </button>
-
+        <button class="small-button" id="addMemoryButton">＋ Tambah</button>
+        <button class="small-button" id="refreshMemories">↻ Muat ulang</button>
       </div>
-
     </div>
 
-    <div
-      class="memory-list"
-      id="memoryList"
-    >
-
-      <div class="memory-empty">
-        Memuat buku ingatan...
-      </div>
-
+    <div class="memory-list" id="memoryList">
+      <div class="memory-empty">Memuat buku ingatan...</div>
     </div>
-
   </section>
 
   <div class="footer">
@@ -716,2128 +678,470 @@
 <!-- =========================
      MEMORY MODAL
 ========================== -->
-
-<div
-  class="modal"
-  id="memoryModal"
->
-
+<div class="modal" id="memoryModal">
   <div class="modal-box">
-
-    <div
-      class="modal-title"
-      id="memoryModalTitle"
-    >
-      Tambah Ingatan
-    </div>
+    <div class="modal-title" id="memoryModalTitle">Tambah Ingatan</div>
 
     <div class="memory-form">
+      <div class="form-label">Isi ingatan</div>
+      <textarea id="memoryContent" maxlength="5000" placeholder="Contoh: Pengguna suka makan mi ayam."></textarea>
 
-      <div class="form-label">
-        Isi ingatan
-      </div>
-
-      <textarea
-        id="memoryContent"
-        maxlength="5000"
-        placeholder="Contoh: Pengguna suka makan mi ayam."
-      ></textarea>
-
-      <div class="form-label">
-        Kategori
-      </div>
-
+      <div class="form-label">Kategori</div>
       <select id="memoryCategoryForm">
-
-        <option value="identitas">
-          Identitas
-        </option>
-
-        <option value="preferensi">
-          Preferensi
-        </option>
-
-        <option value="keluarga">
-          Keluarga
-        </option>
-
-        <option value="pekerjaan">
-          Pekerjaan
-        </option>
-
-        <option value="pengalaman">
-          Pengalaman
-        </option>
-
-        <option value="rencana">
-          Rencana
-        </option>
-
-        <option value="lainnya">
-          Lainnya
-        </option>
-
+        <option value="identitas">Identitas</option>
+        <option value="preferensi">Preferensi</option>
+        <option value="keluarga">Keluarga</option>
+        <option value="pekerjaan">Pekerjaan</option>
+        <option value="pengalaman">Pengalaman</option>
+        <option value="rencana">Rencana</option>
+        <option value="lainnya">Lainnya</option>
       </select>
 
-      <div class="form-label">
-        Subkategori
-      </div>
+      <div class="form-label">Subkategori</div>
+      <input id="memorySubcategory" maxlength="100" placeholder="Opsional">
 
-      <input
-        id="memorySubcategory"
-        maxlength="100"
-        placeholder="Opsional"
-      >
+      <div class="form-label">Nama subjek</div>
+      <input id="memorySubjectName" maxlength="150" placeholder="Contoh: Pengguna">
 
-      <div class="form-label">
-        Nama subjek
-      </div>
-
-      <input
-        id="memorySubjectName"
-        maxlength="150"
-        placeholder="Contoh: Pengguna"
-      >
-
-      <div class="form-label">
-        Keyakinan
-      </div>
-
-      <input
-        id="memoryConfidence"
-        type="number"
-        min="0"
-        max="1"
-        step="0.1"
-        value="0.9"
-      >
+      <div class="form-label">Keyakinan</div>
+      <input id="memoryConfidence" type="number" min="0" max="1" step="0.1" value="0.9">
 
       <div class="modal-actions">
-
-        <button
-          class="small-button"
-          id="cancelMemoryButton"
-        >
-          Batal
-        </button>
-
-        <button
-          class="small-button"
-          id="saveMemoryButton"
-        >
-          Simpan
-        </button>
-
+        <button class="small-button" id="cancelMemoryButton">Batal</button>
+        <button class="small-button" id="saveMemoryButton">Simpan</button>
       </div>
-
     </div>
-
   </div>
-
 </div>
 
 
 <script>
 "use strict";
 
-
-/* ==================================================
-   KONFIGURASI
-================================================== */
-
-const API =
-  "https://soulmate-ai-api.kharishabibh.workers.dev/";
-
+const API = "https://soulmate-ai-api.kharishabibh.workers.dev/";
 const LOCAL_HISTORY_LIMIT = 80;
 const REQUEST_HISTORY_LIMIT = 80;
 
-
-/* ==================================================
-   DOM HELPER
-================================================== */
-
-const $ = id =>
-  document.getElementById(id);
-
-
-/* ==================================================
-   STATE
-================================================== */
+const $ = id => document.getElementById(id);
 
 const state = {
-
   history: [],
-
   memories: [],
-
   conversationId: null,
-
   sending: false,
-
   serverAvailable: false,
-
   editingMemoryId: null
-
 };
 
-
-/* ==================================================
-   ID
-================================================== */
-
 function makeId() {
-
-  if (
-    typeof crypto !== "undefined" &&
-    typeof crypto.randomUUID === "function"
-  ) {
-
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
-
   }
-
-  return (
-    "id-" +
-    Date.now() +
-    "-" +
-    Math.random()
-      .toString(36)
-      .slice(2)
-  );
-
+  return "id-" + Date.now() + "-" + Math.random().toString(36).slice(2);
 }
-
-
-/* ==================================================
-   CURRENT USER / CHARACTER
-================================================== */
 
 function currentCharacter() {
-
-  return (
-    $("characterName")
-      .value
-      .trim() ||
-    "Aruna"
-  );
-
+  return $("characterName").value.trim() || "Aruna";
 }
-
 
 function currentUserId() {
-
-  return (
-    $("userId")
-      .value
-      .trim() ||
-    "remember-me-default"
-  );
-
+  return $("userId").value.trim() || "remember-me-default";
 }
-
-
-/* ==================================================
-   LOCAL STORAGE
-================================================== */
 
 function legacyHistoryKey() {
-
-  return (
-    "remember-me-history-v2-" +
-    encodeURIComponent(currentUserId()) +
-    "-" +
-    encodeURIComponent(currentCharacter())
-  );
-
+  return "remember-me-history-v2-" + encodeURIComponent(currentUserId()) + "-" + encodeURIComponent(currentCharacter());
 }
-
 
 function activeConversationKey() {
-
-  return (
-    "remember-me-active-conversation-v1-" +
-    encodeURIComponent(currentUserId()) +
-    "-" +
-    encodeURIComponent(currentCharacter())
-  );
-
+  return "remember-me-active-conversation-v1-" + encodeURIComponent(currentUserId()) + "-" + encodeURIComponent(currentCharacter());
 }
 
-
-function conversationHistoryKey(
-  conversationId
-) {
-
-  return (
-    "remember-me-conversation-v1-" +
-    encodeURIComponent(currentUserId()) +
-    "-" +
-    encodeURIComponent(currentCharacter()) +
-    "-" +
-    encodeURIComponent(conversationId)
-  );
-
+function conversationHistoryKey(conversationId) {
+  return "remember-me-conversation-v1-" + encodeURIComponent(currentUserId()) + "-" + encodeURIComponent(currentCharacter()) + "-" + encodeURIComponent(conversationId);
 }
-
 
 function getActiveConversationId() {
+  const key = activeConversationKey();
+  let conversationId = localStorage.getItem(key);
+  if (conversationId) return conversationId;
 
-  const key =
-    activeConversationKey();
+  conversationId = makeId();
+  const newHistoryKey = conversationHistoryKey(conversationId);
+  const oldHistoryKey = legacyHistoryKey();
 
-  let conversationId =
-    localStorage.getItem(key);
-
-  if (conversationId) {
-
-    return conversationId;
-
+  localStorage.setItem(key, conversationId);
+  if (localStorage.getItem(newHistoryKey) === null && localStorage.getItem(oldHistoryKey) !== null) {
+    localStorage.setItem(newHistoryKey, localStorage.getItem(oldHistoryKey));
   }
-
-  conversationId =
-    makeId();
-
-  const newHistoryKey =
-    conversationHistoryKey(
-      conversationId
-    );
-
-  const oldHistoryKey =
-    legacyHistoryKey();
-
-  localStorage.setItem(
-    key,
-    conversationId
-  );
-
-  if (
-    localStorage.getItem(newHistoryKey) === null &&
-    localStorage.getItem(oldHistoryKey) !== null
-  ) {
-
-    localStorage.setItem(
-      newHistoryKey,
-      localStorage.getItem(oldHistoryKey)
-    );
-
-  }
-
   return conversationId;
-
 }
 
-
-/* ==================================================
-   STATUS
-================================================== */
-
-function setStatus(
-  text,
-  isError = false
-) {
-
-  const el =
-    $("connectionStatus");
-
-  el.textContent =
-    text;
-
-  el.classList.toggle(
-    "error",
-    isError
-  );
-
+function setStatus(text, isError = false) {
+  const el = $("connectionStatus");
+  el.textContent = text;
+  el.classList.toggle("error", isError);
 }
-
-
-/* ==================================================
-   TEXT
-================================================== */
 
 function safeText(value) {
-
-  return String(
-    value ?? ""
-  );
-
+  return String(value ?? "");
 }
-
-
-/* ==================================================
-   NORMALIZE MESSAGE
-================================================== */
 
 function normalizeMessage(item) {
-
   return {
-
-    id:
-      item.id ||
-      makeId(),
-
-    role:
-      item.role === "assistant"
-        ? "assistant"
-        : "user",
-
-    content:
-      safeText(item.content),
-
-    time:
-      item.time ||
-      new Date().toISOString()
-
+    id: item.id || makeId(),
+    role: item.role === "assistant" ? "assistant" : "user",
+    content: safeText(item.content),
+    time: item.time || new Date().toISOString(),
+    memoryProposal: item.memoryProposal || null
   };
-
 }
-
-
-/* ==================================================
-   LOAD CHAT
-================================================== */
 
 function loadLocalHistory() {
-
   try {
+    state.conversationId = getActiveConversationId();
+    const raw = localStorage.getItem(conversationHistoryKey(state.conversationId));
+    const parsed = raw ? JSON.parse(raw) : [];
 
-    state.conversationId =
-      getActiveConversationId();
-
-    const raw =
-      localStorage.getItem(
-        conversationHistoryKey(
-          state.conversationId
-        )
-      );
-
-    const parsed =
-      raw
-        ? JSON.parse(raw)
-        : [];
-
-    state.history =
-      Array.isArray(parsed)
-        ? parsed
-            .map(normalizeMessage)
-            .slice(-LOCAL_HISTORY_LIMIT)
-        : [];
-
+    state.history = Array.isArray(parsed)
+      ? parsed.map(normalizeMessage).slice(-LOCAL_HISTORY_LIMIT)
+      : [];
     saveLocalHistory();
-
   } catch (error) {
-
-    console.error(
-      "Gagal membaca riwayat lokal:",
-      error
-    );
-
+    console.error("Gagal membaca riwayat lokal:", error);
     state.history = [];
-
   }
-
   renderHistory();
-
 }
-
-
-/* ==================================================
-   SAVE CHAT
-================================================== */
 
 function saveLocalHistory() {
-
   try {
-
-    state.history =
-      state.history.slice(
-        -LOCAL_HISTORY_LIMIT
-      );
-
+    state.history = state.history.slice(-LOCAL_HISTORY_LIMIT);
     if (!state.conversationId) {
-
-      state.conversationId =
-        getActiveConversationId();
-
+      state.conversationId = getActiveConversationId();
     }
-
-    localStorage.setItem(
-
-      conversationHistoryKey(
-        state.conversationId
-      ),
-
-      JSON.stringify(
-        state.history
-      )
-
-    );
-
+    localStorage.setItem(conversationHistoryKey(state.conversationId), JSON.stringify(state.history));
   } catch (error) {
-
-    console.error(
-      "Gagal menyimpan riwayat lokal:",
-      error
-    );
-
-    setStatus(
-      "Penyimpanan lokal gagal",
-      true
-    );
-
+    console.error("Gagal menyimpan riwayat lokal:", error);
+    setStatus("Penyimpanan lokal gagal", true);
   }
-
 }
-
-
-/* ==================================================
-   TIME
-================================================== */
 
 function formatTime(value) {
-
-  const date =
-    new Date(value);
-
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
-
-    return "";
-
-  }
-
-  return date.toLocaleTimeString(
-    "id-ID",
-    {
-      hour: "2-digit",
-      minute: "2-digit"
-    }
-  );
-
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
 }
 
-
-/* ==================================================
-   RENDER CHAT
-================================================== */
-
 function renderHistory() {
-
-  const container =
-    $("chatMessages");
-
+  const container = $("chatMessages");
   container.replaceChildren();
 
   if (!state.history.length) {
-
-    const empty =
-      document.createElement("div");
-
-    empty.className =
-      "empty";
-
-    const emoji =
-      document.createElement("div");
-
-    emoji.className =
-      "emoji";
-
-    emoji.textContent =
-      "🌙";
-
-    const strong =
-      document.createElement("strong");
-
-    strong.textContent =
-      currentCharacter();
-
-    const line =
-      document.createElement("div");
-
-    line.textContent =
-      "Mulai saja percakapanmu. Ceritakan apa pun yang ingin kamu bagi.";
-
-    empty.append(
-      emoji,
-      strong,
-      document.createElement("br"),
-      line
-    );
-
-    container.appendChild(
-      empty
-    );
-
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.innerHTML = `<div class="emoji">🌙</div><strong id="welcomeName">${currentCharacter()}</strong><br>Mulai saja percakapanmu. Ceritakan apa pun yang ingin kamu bagi.`;
+    container.appendChild(empty);
     return;
-
   }
 
+  for (const item of state.history) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "message " + item.role;
+    wrapper.dataset.messageId = item.id;
 
-  for (
-    const item of state.history
-  ) {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.textContent = item.content;
 
-    const wrapper =
-      document.createElement("div");
+    const time = document.createElement("div");
+    time.className = "message-time";
+    time.textContent = formatTime(item.time);
 
-    wrapper.className =
-      "message " +
-      item.role;
+    wrapper.append(bubble, time);
 
-    wrapper.dataset.messageId =
-      item.id;
+    // Render Kartu Memori Interaktif jika ada usulan dari AI
+    if (item.role === "assistant" && item.memoryProposal && !item.memoryProposal.handled) {
+      const card = document.createElement("div");
+      card.className = "memory-card-inline";
+      card.innerHTML = `
+        <div class="memory-card-header">🧠 Mungkin layak diingat</div>
+        <div class="memory-card-body">${safeText(item.memoryProposal.content)}</div>
+        <div class="memory-card-actions">
+          <button class="btn-yes">👍</button>
+          <button class="btn-no">👎</button>
+          <button class="btn-close">×</button>
+        </div>
+      `;
 
-    const bubble =
-      document.createElement("div");
+      const btnYes = card.querySelector(".btn-yes");
+      const btnNo = card.querySelector(".btn-no");
+      const btnClose = card.querySelector(".btn-close");
 
-    bubble.className =
-      "bubble";
+      btnYes.addEventListener("click", async () => {
+        card.querySelector(".memory-card-header").textContent = "✓ Diingat";
+        card.querySelector(".memory-card-header").style.color = "var(--success)";
+        card.querySelector(".memory-card-actions").remove();
+        item.memoryProposal.handled = true;
+        saveLocalHistory();
 
-    bubble.textContent =
-      item.content;
+        // Kirim ke API simpan memori
+        try {
+          await fetch(API + "memories", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userId: currentUserId(),
+              characterId: currentCharacter(),
+              content: item.memoryProposal.content,
+              category: item.memoryProposal.category || "preferensi"
+            })
+          });
+        } catch (err) {
+          console.error("Gagal simpan memori:", err);
+        }
 
-    const time =
-      document.createElement("div");
+        setTimeout(() => {
+          card.style.opacity = "0";
+          setTimeout(() => card.remove(), 300);
+        }, 1500);
+      });
 
-    time.className =
-      "message-time";
+      btnNo.addEventListener("click", () => {
+        card.querySelector(".memory-card-header").textContent = "";
+        card.querySelector(".memory-card-body").textContent = "Tidak akan disimpan.";
+        card.querySelector(".memory-card-actions").remove();
+        item.memoryProposal.handled = true;
+        saveLocalHistory();
 
-    time.textContent =
-      formatTime(
-        item.time
-      );
+        setTimeout(() => {
+          card.style.opacity = "0";
+          setTimeout(() => card.remove(), 300);
+        }, 1200);
+      });
 
-    wrapper.append(
-      bubble,
-      time
-    );
+      btnClose.addEventListener("click", () => {
+        card.style.opacity = "0";
+        setTimeout(() => card.remove(), 200);
+        item.memoryProposal.handled = true;
+        saveLocalHistory();
+      });
 
-    container.appendChild(
-      wrapper
-    );
+      wrapper.appendChild(card);
+    }
 
+    container.appendChild(wrapper);
   }
 
-
-  container.scrollTop =
-    container.scrollHeight;
-
+  container.scrollTop = container.scrollHeight;
 }
 
-
-/* ==================================================
-   ADD MESSAGE
-================================================== */
-
-function addMessage(
-  role,
-  content,
-  id = makeId(),
-  time = new Date().toISOString()
-) {
-
-  const item =
-    normalizeMessage({
-
-      id,
-
-      role,
-
-      content,
-
-      time
-
-    });
-
-  state.history.push(
-    item
-  );
-
+function addMessage(role, content, id = makeId(), time = new Date().toISOString(), memoryProposal = null) {
+  const item = normalizeMessage({ id, role, content, time, memoryProposal });
+  state.history.push(item);
   saveLocalHistory();
-
   renderHistory();
-
   return item;
-
 }
-
-
-/* ==================================================
-   NEW CHAT
-================================================== */
 
 function startNewChat() {
-
   if (state.sending) {
-
-    alert(
-      "Tunggu balasan selesai dulu, bro."
-    );
-
+    alert("Tunggu balasan selesai dulu, bro.");
     return;
-
   }
-
   try {
-
-    const conversationId =
-      makeId();
-
-    localStorage.setItem(
-
-      activeConversationKey(),
-
-      conversationId
-
-    );
-
-    state.conversationId =
-      conversationId;
-
+    const conversationId = makeId();
+    localStorage.setItem(activeConversationKey(), conversationId);
+    state.conversationId = conversationId;
     state.history = [];
-
     renderHistory();
-
-    $("messageInput").value =
-      "";
-
-    $("messageInput").style.height =
-      "auto";
-
-    showScreen(
-      "chatScreen"
-    );
-
-    setStatus(
-      "Chat baru siap"
-    );
-
+    $("messageInput").value = "";
+    $("messageInput").style.height = "auto";
+    showScreen("chatScreen");
+    setStatus("Chat baru siap");
     $("messageInput").focus();
-
   } catch (error) {
-
-    console.error(
-      "Gagal membuat chat baru:",
-      error
-    );
-
-    setStatus(
-      "Gagal membuat chat baru",
-      true
-    );
-
-    alert(
-      "Chat baru gagal dibuat."
-    );
-
+    console.error("Gagal membuat chat baru:", error);
+    setStatus("Gagal membuat chat baru", true);
   }
-
 }
-
-
-/* ==================================================
-   CHECK SERVER
-================================================== */
 
 async function checkConnection() {
-
   try {
-
-    const response =
-      await fetch(
-        API + "health",
-        {
-          method: "GET"
-        }
-      );
-
-    if (!response.ok) {
-
-      throw new Error(
-        "HTTP " +
-        response.status
-      );
-
-    }
-
-    state.serverAvailable =
-      true;
-
-    setStatus(
-      "Server terhubung"
-    );
-
+    const response = await fetch(API + "health", { method: "GET" });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    state.serverAvailable = true;
+    setStatus("Server terhubung");
   } catch (error) {
-
-    state.serverAvailable =
-      false;
-
-    setStatus(
-      "Server belum terhubung",
-      true
-    );
-
-    console.warn(
-      "Pemeriksaan server:",
-      error
-    );
-
+    state.serverAvailable = false;
+    setStatus("Server belum terhubung", true);
   }
-
 }
 
-
-/* ==================================================
-   SEND MESSAGE
-================================================== */
-
 async function sendMessage() {
+  const input = $("messageInput");
+  const button = $("sendButton");
+  const message = input.value.trim();
 
-  const input =
-    $("messageInput");
+  if (!message || state.sending) return;
+  if (!state.conversationId) state.conversationId = getActiveConversationId();
 
-  const button =
-    $("sendButton");
+  state.sending = true;
+  button.disabled = true;
+  button.textContent = "...";
 
-  const message =
-    input.value.trim();
+  const characterName = currentCharacter();
+  const conversationId = state.conversationId;
+  const clientMessageId = makeId();
+  const clientTime = new Date().toISOString();
 
-  if (!message) {
-
-    input.focus();
-
-    return;
-
-  }
-
-  if (state.sending) {
-
-    return;
-
-  }
-
-  if (!state.conversationId) {
-
-    state.conversationId =
-      getActiveConversationId();
-
-  }
-
-  state.sending =
-    true;
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "...";
-
-  const characterName =
-    currentCharacter();
-
-  const conversationId =
-    state.conversationId;
-
-  const clientMessageId =
-    makeId();
-
-  const clientTime =
-    new Date().toISOString();
-
-  setStatus(
-    "Mengirim pesan..."
-  );
-
-  const controller =
-    new AbortController();
-
-  const timeout =
-    setTimeout(
-      () => {
-        controller.abort();
-      },
-      60000
-    );
+  setStatus("Mengirim pesan...");
 
   try {
+    const response = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: currentUserId(),
+        characterId: characterName,
+        characterName: characterName,
+        conversationId: conversationId,
+        personality: $("personality").value.trim(),
+        message: message,
+        clientMessageId: clientMessageId,
+        clientTime: clientTime,
+        history: state.history.slice(-REQUEST_HISTORY_LIMIT).map(item => ({
+          id: item.id,
+          role: item.role,
+          content: item.content,
+          time: item.time
+        }))
+      })
+    });
 
-    const response =
-      await fetch(
-        API,
-        {
-          method: "POST",
+    const data = await response.json();
+    if (!response.ok || data.error) throw new Error(data.error || "HTTP " + response.status);
 
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
+    const reply = safeText(data.reply || data.response).trim();
+    if (!reply) throw new Error("Server tidak mengirim balasan.");
 
-          signal:
-            controller.signal,
+    if (state.conversationId !== conversationId) return;
 
-          body:
-            JSON.stringify({
-
-              userId:
-                currentUserId(),
-
-              characterId:
-                characterName,
-
-              characterName:
-                characterName,
-
-              conversationId:
-                conversationId,
-
-              personality:
-                $("personality")
-                  .value
-                  .trim(),
-
-              message:
-                message,
-
-              clientMessageId:
-                clientMessageId,
-
-              clientTime:
-                clientTime,
-
-              history:
-                state.history
-                  .slice(
-                    -REQUEST_HISTORY_LIMIT
-                  )
-                  .map(
-                    item => ({
-                      id: item.id,
-                      role: item.role,
-                      content: item.content,
-                      time: item.time
-                    })
-                  )
-
-            })
-
-        }
-      );
-
-    let data;
-
-    try {
-
-      data =
-        await response.json();
-
-    } catch {
-
-      throw new Error(
-        "Respons server bukan JSON."
-      );
-
-    }
-
-    if (
-      !response.ok ||
-      data.error
-    ) {
-
-      throw new Error(
-        data.error ||
-        "HTTP " +
-        response.status
-      );
-
-    }
-
-    const reply =
-      safeText(
-        data.reply ||
-        data.response
-      ).trim();
-
-    if (!reply) {
-
-      throw new Error(
-        "Server tidak mengirim balasan."
-      );
-
-    }
-
-    if (
-      state.conversationId !==
-      conversationId
-    ) {
-
-      return;
-
-    }
-
-    addMessage(
-      "user",
-      message,
-      clientMessageId,
-      clientTime
-    );
+    addMessage("user", message, clientMessageId, clientTime);
+    
+    // Cek jika backend mengirimkan usulan memori (misal: data.memoryProposal)
+    const memoryProposal = data.memoryProposal || null;
 
     addMessage(
       "assistant",
       reply,
-      data.assistantMessageId ||
-        makeId(),
-      data.assistantTime ||
-        new Date().toISOString()
+      data.assistantMessageId || makeId(),
+      data.assistantTime || new Date().toISOString(),
+      memoryProposal
     );
 
-    input.value =
-      "";
-
-    input.style.height =
-      "auto";
-
-    setStatus(
-      "Server terhubung"
-    );
-
+    input.value = "";
+    input.style.height = "auto";
+    setStatus("Server terhubung");
   } catch (error) {
-
-    const detail =
-      error.name === "AbortError"
-        ? "Server tidak merespons dalam 60 detik."
-        : error.message ||
-          "Koneksi gagal.";
-
-    setStatus(
-      "Gagal: " + detail,
-      true
-    );
-
-    alert(
-      "Pesan gagal dikirim:\n" +
-      detail
-    );
-
+    setStatus("Gagal: " + error.message, true);
+    alert("Pesan gagal dikirim:\n" + error.message);
   } finally {
-
-    clearTimeout(
-      timeout
-    );
-
-    state.sending =
-      false;
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "Kirim";
-
+    state.sending = false;
+    button.disabled = false;
+    button.textContent = "Kirim";
   }
-
 }
 
-
-/* ==================================================
-   SCREEN
-================================================== */
-
-function showScreen(
-  screenId
-) {
-
-  document
-    .querySelectorAll(
-      ".screen"
-    )
-    .forEach(
-      screen => {
-
-        screen.classList.toggle(
-          "active",
-          screen.id === screenId
-        );
-
-      }
-    );
-
-  document
-    .querySelectorAll(
-      ".tab[data-screen]"
-    )
-    .forEach(
-      tab => {
-
-        tab.classList.toggle(
-          "active",
-          tab.dataset.screen ===
-          screenId
-        );
-
-      }
-    );
-
-  if (
-    screenId ===
-    "memoryScreen"
-  ) {
-
-    loadMemories();
-
-  }
-
+function showScreen(screenId) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.toggle("active", screen.id === screenId);
+  });
+  document.querySelectorAll(".tab[data-screen]").forEach(tab => {
+    tab.classList.toggle("active", tab.dataset.screen === screenId);
+  });
+  if (screenId === "memoryScreen") loadMemories();
 }
-
-
-/* ==================================================
-   LOAD MEMORIES
-================================================== */
 
 async function loadMemories() {
+  const container = $("memoryList");
+  container.innerHTML = '<div class="memory-empty">Memuat buku ingatan...</div>';
 
-  const container =
-    $("memoryList");
-
-  container.innerHTML =
-    '<div class="memory-empty">Memuat buku ingatan...</div>';
-
-  const params =
-    new URLSearchParams({
-
-      userId:
-        currentUserId(),
-
-      characterId:
-        currentCharacter()
-
-    });
+  const params = new URLSearchParams({
+    userId: currentUserId(),
+    characterId: currentCharacter()
+  });
 
   try {
+    const response = await fetch(API + "memories?" + params.toString());
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "HTTP " + response.status);
 
-    const response =
-      await fetch(
-        API +
-        "memories?" +
-        params.toString()
-      );
-
-    let data;
-
-    try {
-
-      data =
-        await response.json();
-
-    } catch {
-
-      throw new Error(
-        "Respons server bukan JSON."
-      );
-
-    }
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "HTTP " +
-        response.status
-      );
-
-    }
-
-    state.memories =
-      Array.isArray(
-        data.memories
-      )
-        ? data.memories
-        : [];
-
+    state.memories = Array.isArray(data.memories) ? data.memories : [];
     renderMemories();
-
   } catch (error) {
-
-    console.error(
-      "Gagal memuat ingatan:",
-      error
-    );
-
-    container.replaceChildren();
-
-    const empty =
-      document.createElement("div");
-
-    empty.className =
-      "memory-empty";
-
-    empty.textContent =
-      "Buku ingatan belum bisa dimuat. Pastikan endpoint /memories tersedia di Worker.";
-
-    container.appendChild(
-      empty
-    );
-
+    container.innerHTML = '<div class="memory-empty">Buku ingatan belum bisa dimuat.</div>';
   }
-
 }
-
-
-/* ==================================================
-   RENDER MEMORIES
-================================================== */
 
 function renderMemories() {
-
-  const container =
-    $("memoryList");
-
+  const container = $("memoryList");
   container.replaceChildren();
 
-  const search =
-    $("memorySearch")
-      .value
-      .trim()
-      .toLowerCase();
+  const search = $("memorySearch").value.trim().toLowerCase();
+  const category = $("memoryCategory").value;
 
-  const category =
-    $("memoryCategory")
-      .value;
-
-  const filtered =
-    state.memories.filter(
-      memory => {
-
-        const content =
-          safeText(
-            memory.content ||
-            memory.memory
-          );
-
-        const text =
-          (
-            content +
-            " " +
-            safeText(
-              memory.category
-            ) +
-            " " +
-            safeText(
-              memory.subject_name
-            ) +
-            " " +
-            safeText(
-              memory.subcategory
-            )
-          ).toLowerCase();
-
-        const matchesSearch =
-          !search ||
-          text.includes(search);
-
-        const matchesCategory =
-          !category ||
-          memory.category ===
-            category;
-
-        return (
-          matchesSearch &&
-          matchesCategory
-        );
-
-      }
-    );
+  const filtered = state.memories.filter(memory => {
+    const content = safeText(memory.content || memory.memory);
+    const text = (content + " " + safeText(memory.category) + " " + safeText(memory.subject_name)).toLowerCase();
+    return (!search || text.includes(search)) && (!category || memory.category === category);
+  });
 
   if (!filtered.length) {
-
-    const empty =
-      document.createElement(
-        "div"
-      );
-
-    empty.className =
-      "memory-empty";
-
-    empty.textContent =
-      state.memories.length
-        ? "Tidak ada ingatan yang cocok dengan pencarian."
-        : "Belum ada ingatan yang dikirim server.";
-
-    container.appendChild(
-      empty
-    );
-
+    const empty = document.createElement("div");
+    empty.className = "memory-empty";
+    empty.textContent = state.memories.length ? "Tidak ada ingatan yang cocok." : "Belum ada ingatan.";
+    container.appendChild(empty);
     return;
-
   }
 
-
-  for (
-    const memory of filtered
-  ) {
-
-    const card =
-      document.createElement(
-        "article"
-      );
-
-    card.className =
-      "memory-card";
-
-    if (
-      Number(memory.is_active) ===
-      0
-    ) {
-
-      card.classList.add(
-        "inactive"
-      );
-
-    }
-
-
-    /* META */
-
-    const meta =
-      document.createElement(
-        "div"
-      );
-
-    meta.className =
-      "memory-meta";
-
-
-    const categoryBadge =
-      document.createElement(
-        "span"
-      );
-
-    categoryBadge.className =
-      "badge";
-
-    categoryBadge.textContent =
-      memory.category ||
-      "lainnya";
-
-
-    const statusBadge =
-      document.createElement(
-        "span"
-      );
-
-    statusBadge.className =
-      "badge";
-
-    statusBadge.textContent =
-      Number(memory.is_active) ===
-      0
-        ? "nonaktif"
-        : (
-            memory.verification_status ||
-            "aktif"
-          );
-
-
-    meta.append(
-      categoryBadge,
-      statusBadge
-    );
-
-
-    /* CONTENT */
-
-    const content =
-      document.createElement(
-        "p"
-      );
-
-    content.textContent =
-      memory.content ||
-      memory.memory ||
-      "";
-
-
-    card.append(
-      meta,
-      content
-    );
-
-
-    /* DETAILS */
-
-    const details = [];
-
-
-    if (
-      memory.subject_name
-    ) {
-
-      details.push(
-        "Subjek: " +
-        memory.subject_name
-      );
-
-    }
-
-
-    if (
-      memory.subcategory
-    ) {
-
-      details.push(
-        "Subkategori: " +
-        memory.subcategory
-      );
-
-    }
-
-
-    if (
-      memory.confidence !==
-      null &&
-      memory.confidence !==
-      undefined
-    ) {
-
-      details.push(
-        "Keyakinan: " +
-        Number(
-          memory.confidence
-        ).toFixed(1)
-      );
-
-    }
-
-
-    if (
-      memory.recorded_at
-    ) {
-
-      const date =
-        new Date(
-          memory.recorded_at
-        );
-
-      if (
-        !Number.isNaN(
-          date.getTime()
-        )
-      ) {
-
-        details.push(
-          "Dicatat: " +
-          date.toLocaleDateString(
-            "id-ID"
-          )
-        );
-
-      }
-
-    }
-
-
-    if (details.length) {
-
-      const detail =
-        document.createElement(
-          "div"
-        );
-
-      detail.className =
-        "memory-meta";
-
-      detail.textContent =
-        details.join(" · ");
-
-      card.appendChild(
-        detail
-      );
-
-    }
-
-
-    /* ACTION BUTTONS */
-
-    const actions =
-      document.createElement(
-        "div"
-      );
-
-    actions.style.display =
-      "flex";
-
-    actions.style.gap =
-      "7px";
-
-    actions.style.marginTop =
-      "12px";
-
-
-    const editButton =
-      document.createElement(
-        "button"
-      );
-
-    editButton.className =
-      "small-button";
-
-    editButton.textContent =
-      "✏️ Edit";
-
-    editButton.addEventListener(
-      "click",
-      () => {
-        openEditMemory(
-          memory
-        );
-      }
-    );
-
-
-    const toggleButton =
-      document.createElement(
-        "button"
-      );
-
-    toggleButton.className =
-      "small-button " +
-      (
-        Number(memory.is_active) ===
-        0
-          ? "success"
-          : "danger"
-      );
-
-    toggleButton.textContent =
-      Number(memory.is_active) ===
-      0
-        ? "↺ Aktifkan"
-        : "⊖ Nonaktifkan";
-
-    toggleButton.addEventListener(
-      "click",
-      () => {
-        toggleMemory(
-          memory
-        );
-      }
-    );
-
-
-    actions.append(
-      editButton,
-      toggleButton
-    );
-
-    card.appendChild(
-      actions
-    );
-
-    container.appendChild(
-      card
-    );
-
+  for (const memory of filtered) {
+    const card = document.createElement("article");
+    card.className = "memory-card";
+    if (Number(memory.is_active) === 0) card.classList.add("inactive");
+
+    const p = document.createElement("p");
+    p.textContent = safeText(memory.content || memory.memory);
+
+    const meta = document.createElement("div");
+    meta.className = "memory-meta";
+    meta.innerHTML = `<span class="badge">${safeText(memory.category || "lainnya")}</span>`;
+
+    card.append(p, meta);
+    container.appendChild(card);
   }
-
 }
 
+// Event Listeners
+document.querySelectorAll(".tab[data-screen]").forEach(tab => {
+  tab.addEventListener("click", () => showScreen(tab.dataset.screen));
+});
 
-/* ==================================================
-   MEMORY MODAL
-================================================== */
-
-function openMemoryModal() {
-
-  state.editingMemoryId =
-    null;
-
-  $("memoryModalTitle")
-    .textContent =
-      "Tambah Ingatan";
-
-  $("memoryContent")
-    .value =
-      "";
-
-  $("memoryCategoryForm")
-    .value =
-      "lainnya";
-
-  $("memorySubcategory")
-    .value =
-      "";
-
-  $("memorySubjectName")
-    .value =
-      "Pengguna";
-
-  $("memoryConfidence")
-    .value =
-      "0.9";
-
-  $("memoryModal")
-    .classList.add(
-      "show"
-    );
-
-  $("memoryContent")
-    .focus();
-
-}
-
-
-function openEditMemory(
-  memory
-) {
-
-  state.editingMemoryId =
-    memory.id;
-
-  $("memoryModalTitle")
-    .textContent =
-      "Edit Ingatan";
-
-  $("memoryContent")
-    .value =
-      memory.content ||
-      "";
-
-  $("memoryCategoryForm")
-    .value =
-      memory.category ||
-      "lainnya";
-
-  $("memorySubcategory")
-    .value =
-      memory.subcategory ||
-      "";
-
-  $("memorySubjectName")
-    .value =
-      memory.subject_name ||
-      "Pengguna";
-
-  $("memoryConfidence")
-    .value =
-      memory.confidence ??
-      "0.9";
-
-  $("memoryModal")
-    .classList.add(
-      "show"
-    );
-
-}
-
-
-function closeMemoryModal() {
-
-  $("memoryModal")
-    .classList.remove(
-      "show"
-    );
-
-  state.editingMemoryId =
-    null;
-
-}
-
-
-/* ==================================================
-   SAVE MEMORY
-================================================== */
-
-async function saveMemory() {
-
-  const content =
-    $("memoryContent")
-      .value
-      .trim();
-
-  if (!content) {
-
-    alert(
-      "Isi ingatan belum diisi."
-    );
-
-    return;
-
+$("newChatButton").addEventListener("click", startNewChat);
+$("sendButton").addEventListener("click", sendMessage);
+$("messageInput").addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
   }
+});
 
+$("memorySearch").addEventListener("input", renderMemories);
+$("memoryCategory").addEventListener("change", renderMemories);
+$("refreshMemories").addEventListener("click", loadMemories);
 
-  const button =
-    $("saveMemoryButton");
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "Menyimpan...";
-
-
-  const payload = {
-
-    userId:
-      currentUserId(),
-
-    characterId:
-      currentCharacter(),
-
-    category:
-      $("memoryCategoryForm")
-        .value,
-
-    subcategory:
-      $("memorySubcategory")
-        .value
-        .trim(),
-
-    subject_type:
-      "user",
-
-    subject_name:
-      $("memorySubjectName")
-        .value
-        .trim() ||
-      "Pengguna",
-
-    memory_type:
-      "note",
-
-    content:
-      content,
-
-    confidence:
-      Math.max(
-        0,
-        Math.min(
-          1,
-          Number(
-            $("memoryConfidence")
-              .value
-          ) || 0.5
-        )
-      )
-
-  };
-
-
-  try {
-
-    let url =
-      API + "memories";
-
-    let method =
-      "POST";
-
-
-    if (
-      state.editingMemoryId
-    ) {
-
-      url =
-        API +
-        "memories/" +
-        encodeURIComponent(
-          state.editingMemoryId
-        );
-
-      method =
-        "PUT";
-
-    }
-
-
-    const response =
-      await fetch(
-        url,
-        {
-          method,
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify(
-              payload
-            )
-
-        }
-      );
-
-
-    let data;
-
-    try {
-
-      data =
-        await response.json();
-
-    } catch {
-
-      throw new Error(
-        "Respons server bukan JSON."
-      );
-
-    }
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "HTTP " +
-        response.status
-      );
-
-    }
-
-
-    closeMemoryModal();
-
-    await loadMemories();
-
-    setStatus(
-      state.editingMemoryId
-        ? "Ingatan diperbarui"
-        : "Ingatan ditambahkan"
-    );
-
-  } catch (error) {
-
-    console.error(
-      "Gagal menyimpan ingatan:",
-      error
-    );
-
-    alert(
-      "Gagal menyimpan ingatan:\n" +
-      error.message
-    );
-
-  } finally {
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "Simpan";
-
-  }
-
-}
-
-
-/* ==================================================
-   TOGGLE MEMORY
-================================================== */
-
-async function toggleMemory(
-  memory
-) {
-
-  const currentlyActive =
-    Number(
-      memory.is_active
-    ) === 1;
-
-  const action =
-    currentlyActive
-      ? "menonaktifkan"
-      : "mengaktifkan";
-
-
-  if (
-    !confirm(
-      "Yakin mau " +
-      action +
-      " ingatan ini?"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  try {
-
-    const response =
-      await fetch(
-
-        API +
-        "memories/" +
-        encodeURIComponent(
-          memory.id
-        ),
-
-        {
-
-          method:
-            "PATCH",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-
-              is_active:
-                currentlyActive
-                  ? 0
-                  : 1
-
-            })
-
-        }
-
-      );
-
-
-    let data;
-
-    try {
-
-      data =
-        await response.json();
-
-    } catch {
-
-      throw new Error(
-        "Respons server bukan JSON."
-      );
-
-    }
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        "HTTP " +
-        response.status
-      );
-
-    }
-
-
-    await loadMemories();
-
-    setStatus(
-      currentlyActive
-        ? "Ingatan dinonaktifkan"
-        : "Ingatan diaktifkan"
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Gagal mengubah status ingatan:",
-      error
-    );
-
-    alert(
-      "Gagal mengubah status ingatan:\n" +
-      error.message
-    );
-
-  }
-
-}
-
-
-/* ==================================================
-   EVENT CHAT
-================================================== */
-
-$("sendButton")
-  .addEventListener(
-    "click",
-    sendMessage
-  );
-
-
-$("messageInput")
-  .addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key ===
-          "Enter" &&
-        !event.shiftKey
-      ) {
-
-        event.preventDefault();
-
-        sendMessage();
-
-      }
-
-    }
-  );
-
-
-$("messageInput")
-  .addEventListener(
-    "input",
-    event => {
-
-      event.target.style.height =
-        "auto";
-
-      event.target.style.height =
-        Math.min(
-          event.target.scrollHeight,
-          130
-        ) +
-        "px";
-
-    }
-  );
-
-
-/* ==================================================
-   NAVIGASI
-================================================== */
-
-document
-  .querySelectorAll(
-    ".tab[data-screen]"
-  )
-  .forEach(
-    tab => {
-
-      tab.addEventListener(
-        "click",
-        () => {
-
-          showScreen(
-            tab.dataset.screen
-          );
-
-        }
-      );
-
-    }
-  );
-
-
-$("newChatButton")
-  .addEventListener(
-    "click",
-    startNewChat
-  );
-
-
-/* ==================================================
-   CHARACTER / USER
-================================================== */
-
-$("characterName")
-  .addEventListener(
-    "change",
-    () => {
-
-      $("welcomeName")
-        .textContent =
-          currentCharacter();
-
-      loadLocalHistory();
-
-    }
-  );
-
-
-$("userId")
-  .addEventListener(
-    "change",
-    () => {
-
-      loadLocalHistory();
-
-    }
-  );
-
-
-/* ==================================================
-   MEMORY EVENTS
-================================================== */
-
-$("addMemoryButton")
-  .addEventListener(
-    "click",
-    openMemoryModal
-  );
-
-
-$("cancelMemoryButton")
-  .addEventListener(
-    "click",
-    closeMemoryModal
-  );
-
-
-$("saveMemoryButton")
-  .addEventListener(
-    "click",
-    saveMemory
-  );
-
-
-$("refreshMemories")
-  .addEventListener(
-    "click",
-    loadMemories
-  );
-
-
-$("memorySearch")
-  .addEventListener(
-    "input",
-    renderMemories
-  );
-
-
-$("memoryCategory")
-  .addEventListener(
-    "change",
-    renderMemories
-  );
-
-
-$("memoryModal")
-  .addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target ===
-        $("memoryModal")
-      ) {
-
-        closeMemoryModal();
-
-      }
-
-    }
-  );
-
-
-/* ==================================================
-   INIT
-================================================== */
-
+// Inisialisasi awal
 loadLocalHistory();
-
 checkConnection();
-
 </script>
 
 </body>
